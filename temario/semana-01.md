@@ -161,7 +161,7 @@ Añade `LIDERA` entre Ana y Atlas además de `TRABAJA_EN`. El multigrafo permite
 ### Nivel 3 — Diseño
 
 7. Una persona puede trabajar en dos departamentos con porcentajes de dedicación distintos. Diseña dónde guardarías el porcentaje y cómo representarías su vigencia temporal.
-8. El negocio afirma que «Cliente» y «Comprador» son sinónimos. ¿Los fusionarías automáticamente? Describe qué evidencia necesitarías.
+8. El negocio afirma que «Libro» y «Comprador» son sinónimos. ¿Los fusionarías automáticamente? Describe qué evidencia necesitarías.
 
 ## 6. Soluciones razonadas y pistas
 
@@ -182,14 +182,14 @@ def personas_de_departamento(g, departamento_id):
 
 **Ejercicio 8.** No: equivalencia textual no significa equivalencia conceptual. Hay que revisar definiciones, alcance, contexto, propietario y fuentes antes de aprobar una relación de sinonimia.
 
-## 7. Aplicación a tu diccionario semántico
+## 7. Aplicación a tu catálogo de biblioteca digital
 
 Construye una ficha de concepto con estos campos:
 
 | Campo | Ejemplo | ¿Por qué? |
 |---|---|---|
-| id | `concepto:cliente` | Identidad estable |
-| nombre | Cliente | Presentación |
+| id | `concepto:libro` | Identidad estable |
+| nombre | Libro | Presentación |
 | definición | Persona u organización que... | Significado |
 | fuente | Glosario comercial v2 | Trazabilidad |
 | estado | Borrador | Gobernanza |
