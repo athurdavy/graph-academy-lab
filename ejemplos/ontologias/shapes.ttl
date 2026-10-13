@@ -1,0 +1,17 @@
+@prefix ex: <https://example.org/biblioteca/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:LibroShape a sh:NodeShape ;
+  sh:targetClass ex:Libro ;
+  sh:property [
+    sh:path ex:titulo ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string
+  ] ;
+  sh:property [
+    sh:path ex:isbn ;
+    sh:minCount 1 ;
+    sh:datatype xsd:string
+  ] .
