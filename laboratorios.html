@@ -9,7 +9,7 @@
 const items=[["01","Modelado con Python"],["02","RDF, OWL y SHACL"],["03","Neo4j Aura y Cypher"],["04","Arquitectura Python"]];
 const id=/^0[1-4]$/.test(new URLSearchParams(location.search).get("lab")||"")?new URLSearchParams(location.search).get("lab"):"01";
 const nav=document.getElementById("nav");nav.innerHTML=items.map(([n,label])=>'<a class="'+(n===id?'active':'')+'" href="?lab='+n+'">🧪 '+n+' · '+label+'</a>').join('')+'<a href="lecciones.html">📚 Volver a las lecciones</a>';
-const target="laboratorios/"+id+"-"+({01:"modelado",02:"ontologias",03:"neo4j",04:"arquitectura"}[id])+".md";
+const target="laboratorios/"+id+"-"+({"01":"modelado","02":"ontologias","03":"neo4j","04":"arquitectura"}[id])+".md";
 document.addEventListener("DOMContentLoaded",async()=>{
  const article=document.getElementById("article");
  try{
