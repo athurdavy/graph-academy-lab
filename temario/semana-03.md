@@ -4,6 +4,43 @@
 
 **Unidad 3 de 42 · Fundamentos.** Antes: [Semana 02 — recorridos](semana-02.md). Después: [Semana 04 — Neo4j AuraDB](semana-04.md). Tiempo: 8–12 horas.
 
+## Antes de empezar: una advertencia sobre el orden
+
+Has trabajado con **nodos, relaciones e identificadores** en la semana 01, y con **caminos y recorridos** en la semana 02. Esos conceptos son el fundamento. Esta unidad introduce una segunda manera de **representar** conocimiento, pero **todavía no te pide diseñar ontologías OWL**.
+
+Para evitar confusión, tienes dos niveles:
+
+- **Objetivo obligatorio ahora:** distinguir un grafo de propiedades de un conjunto de triples RDF, entender sujeto/predicado/objeto y reconocer una IRI.
+- **Adelanto, no materia que debas dominar aún:** RDFS, SKOS, OWL, SHACL, GraphDB y razonadores. Los aprenderás paso a paso en las semanas 11–14 y los talleres posteriores.
+
+### ¿Por qué aprender esto antes de Neo4j?
+
+Porque el mismo ejemplo aparecerá en dos entornos. Primero lo representaremos con **nodos conectados** y después como **afirmaciones triples**. Necesitas reconocer que son formas distintas de expresar información relacionada, no aprender todos los estándares en una sola sesión.
+
+### Una misma frase: dos representaciones
+
+**Frase:** «Marina escribió El mapa de los grafos».
+
+En el grafo de propiedades:
+
+~~~text
+(:Autor {id:"A-001"}) ──ESCRIBIO──▶ (:Libro {isbn:"ISBN-001"})
+~~~
+
+En RDF se podría expresar así, eligiendo la dirección del predicado:
+
+~~~text
+Sujeto:   libro001
+Predicado: dcterms:creator
+Objeto:   autor001
+~~~
+
+**¿Por qué la flecha parece invertida?** Porque el predicado **«creador de este recurso»** apunta del libro a la autora, mientras que la relación **«escribió»** va de la autora al libro. No es un error: cada relación debe leerse como una oración. **RDF no impone que uses el mismo sentido que Cypher.**
+
+**Control de comprensión:** identifica qué entidad se describe en el triple, qué relación se afirma y hacia qué otra entidad apunta. Si puedes hacerlo, estás preparado para estudiar las primeras líneas Turtle.
+
+---
+
 ## 1. ¿Por qué existen varios modelos de grafo?
 
 En las primeras dos semanas has construido un grafo de biblioteca con Python. Ahora distinguimos dos modelos que pueden representar conexiones, pero tienen **mecanismos y semánticas distintos**:
