@@ -403,6 +403,64 @@ RETURN a.nombre AS autora, t.nombre AS tema;
 
 No necesitas memorizar todavía Cypher. Por ahora observa cómo el patrón refleja la pregunta y exige relaciones con nombre y dirección.
 
+## 8.1. Del dibujo al problema real de la biblioteca
+
+Acabas de estudiar recorridos sobre letras A, B, C y D. Ahora vamos a aplicar el mismo razonamiento a una pregunta del proyecto: **«¿sobre qué temas ha escrito Marina Soler?»**
+
+```text
+Marina (Autor)
+    |
+    | ESCRIBIO
+    v
+  Libro
+    |
+    | TRATA_SOBRE
+    v
+  Tema
+```
+
+No sirve seguir **cualquier** relación: tenemos que buscar primero `ESCRIBIO` y después `TRATA_SOBRE`. Un algoritmo genérico de caminos no entiende por sí solo qué significan esas palabras.
+
+**Paso 1:** salimos del nodo `autor:A-001`. **Paso 2:** visitamos los libros conectados mediante `ESCRIBIO`. **Paso 3:** desde cada libro seguimos `TRATA_SOBRE`. **Paso 4:** guardamos los temas distintos.
+
+Ejecuta desde la raíz del repositorio:
+
+```python
+from laboratorios.biblioteca import construir_biblioteca
+
+g = construir_biblioteca()
+
+def temas_de_autor(grafo, autor_id):
+    origen = f"autor:{autor_id}"
+    if origen not in grafo:
+        return []
+
+    temas = set()
+    for _, libro, relacion in grafo.out_edges(origen, data=True):
+        if relacion["tipo"] != "ESCRIBIO":
+            continue
+        for _, tema, segunda in grafo.out_edges(libro, data=True):
+            if segunda["tipo"] == "TRATA_SOBRE":
+                temas.add(tema)
+    return sorted(temas)
+
+print(temas_de_autor(g, "A-001"))
+```
+
+**Salida esperada:**
+
+```text
+['tema:GRAFOS']
+```
+
+**¿Por qué solo un tema?** El grafo pequeño de NetworkX tiene cinco nodos y cuatro relaciones. Marina escribió dos libros, pero solo uno de ellos tiene una relación de tema. No debemos **inventar** una clasificación para el segundo libro. El dataset ampliado de Neo4j de la semana 04 contiene más entidades y relaciones, por eso algunas respuestas cambian.
+
+**Prueba de transferencia:** añade otra relación `TRATA_SOBRE` del segundo libro a `tema:GRAFOS`. ¿Aparecerá el tema repetido? No: utilizamos `set()` para conservar identificadores únicos.
+
+**Idea que te llevarás a Cypher:** un camino puede existir físicamente y, sin embargo, **no responder a tu pregunta de negocio**. Antes de recorrer dos aristas, expresa qué significa cada una.
+
+---
+
 ## 9. Practica por niveles (sin mirar las soluciones)
 
 **Nivel 1 — Comprender**
