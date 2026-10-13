@@ -1,8 +1,12 @@
-# Plan de estudios completo — 24 semanas
+# Plan de estudios — 24 semanas
+
+**La formación se consulta en la web:** [Entrar al lector de lecciones](https://athurdavy.github.io/graph-academy-lab/lecciones.html). Cada semana tiene su propia página con teoría y ejercicios; no es necesario navegar archivos Markdown en GitHub.
+
+**Ruta adicional:** [Arquitectura con Neo4j, PostgreSQL, ORM/OGM y RDF](https://athurdavy.github.io/graph-academy-lab/lecciones.html?tema=arquitectura).
+
+**Caso práctico:** biblioteca digital **completamente ficticia**, con libros, autores y temas inventados. No se utiliza información confidencial de ningún proyecto externo.
 
 **Perfil de entrada:** Python y fundamentos de SQL. **Dedicación orientativa:** 8–10 h/semana.
-
-El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ontología* y *catálogo de biblioteca digital*. No presupone que el proyecto necesite GraphRAG ni que un motor de grafos implemente automáticamente estándares W3C.
 
 | Semana | Objetivo | Entregable |
 |---|---|---|
@@ -53,4 +57,8 @@ El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ont
 - [Semana 03: grafos de propiedades y RDF](semana-03.md)
 - [Caso práctico ficticio: biblioteca digital](proyecto-catálogo.md)
 
-Las semanas 1–7 tienen material desarrollado. Las semanas 8–24 siguen planificadas y pendientes de ampliación.
+Las 24 semanas cuentan con páginas de formación, pero **su profundidad es desigual**: algunas ofrecen laboratorios extensos y soluciones; otras son primeras unidades prácticas que necesitan ampliar pruebas, ejemplos y teoría para alcanzar el mismo nivel.
+
+## Lectura dentro de la web
+
+Para acceder a cualquier semana usa `https://athurdavy.github.io/graph-academy-lab/lecciones.html?semana=NN`, donde `NN` es el número de dos dígitos de la semana. El código y los datos ficticios están en `ejemplos/neo4j/` y `ejemplos/ontologias/`.
