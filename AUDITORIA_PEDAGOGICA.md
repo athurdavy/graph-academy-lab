@@ -88,3 +88,59 @@
 
 **Criterio de cierre:** ninguna de las unidades se considera «100 % terminada» por tener varias páginas o referencias oficiales. Tiene que ser comprensible, ejecutable, transferible y verificable.
 
+
+
+## Auditoría transversal de las 24 semanas — octubre de 2026
+
+**Pregunta de evaluación:** ¿puede una persona que sabe programar, pero no conoce grafos, estudiar esta unidad en orden, explicar cada símbolo y resolver un problema nuevo sin consultar la solución?
+
+**Estado actual por tramo:**
+
+| Semanas | Evaluación de contenido | Intervención realizada | Siguiente requisito |
+|---|---|---|---|
+| 01–03 | Base desarrollada, requiere observación con principiantes y verificación de ejemplos | Explicaciones paso a paso de nodos, identificadores, BFS/DFS, RDF y diferencias entre símbolos | Comprobar aprendizaje en casos nuevos |
+| 04–07 | Tutoriales amplios de Neo4j, Cypher, CSV y Python; integración Aura pendiente | Explicaciones sintácticas, laboratorio, pruebas simuladas y evaluación práctica | Ejecutar cada sentencia en AuraDB y validar resultados |
+| 08 | Era un esquema, ahora incluye instrucción por instrucción | Rediseñada como primera clase ArcadeDB con vocabulario, SQL y soluciones | Verificar sintaxis en versión instalada |
+| 09–10 | Eran clases breves y con formato Markdown erróneo | Introducción a API/HTTP/JSON, reglas de error, benchmark y soluciones | Pruebas de integración ArcadeDB y benchmarks reproducibles |
+| 11–14 | Clases extensas de semántica; necesitan pruebas educativas e integración de razonadores | RDF, SKOS, SPARQL, OWL, SHACL explicados con bibliografía y código | Probar razonadores, validación y casos negativos |
+| 15–17 | Esquemas insuficientes | Añadidos ejemplos básicos de calidad, procedencia y arquitectura | Desarrollar tests de gobierno, historial y consistencia híbrida |
+| 18–21 | **Borradores introductorios**, no enseñan desde cero GraphRAG ni NLP profesional | Estado pedagógico advertido de forma explícita | Construir curso completo con datos, métricas y soluciones |
+| 22–24 | **Borradores introductorios**, no constituyen una evaluación experta | Estado pedagógico advertido | Implementar proyecto final ejecutable y rúbrica verificable |
+
+### Defectos transversales detectados
+
+1. **Terminología que presupone experiencia:** etiquetas Cypher, prefijos Turtle, patrones, drivers y APIs se introducían sin explicar qué símbolos significan. Acción: introducir primero frase, diagrama, lectura símbolo a símbolo y código.
+2. **Cambio de modelo antes de dominar el anterior:** RDF aparecía antes de que el alumno manejara Neo4j. Acción: la semana 03 es únicamente una **comparación introductoria**; las ontologías formales comienzan después.
+3. **Repetición de texto superficial en semanas avanzadas:** se presentaban objetivos genéricos sin soluciones. Acción: declarar estado de borrador y no confundir extensión con aprendizaje.
+4. **Diferencias entre datasets no comunicadas:** el grafo NetworkX de la primera semana es deliberadamente pequeño; el dataset Neo4j posterior contiene más libros, autores, temas y relaciones. Las salidas esperadas deben asociarse siempre a uno de esos conjuntos.
+5. **Ejecución no demostrada:** código en GitHub y explicación conceptual no son lo mismo que un test de integración. Nunca dar un resultado por comprobado contra un motor remoto si no se ha ejecutado.
+6. **Presentación del código:** se detectaron fences escapados en algunas semanas. Acción: corrección en las unidades intervenidas, pendiente revisión automática de todos los documentos.
+
+### Rúbrica de calidad previa a publicar una unidad como terminada
+
+Puntúa cada ítem con **0 = ausente**, **1 = parcial**, **2 = comprobado**, por un máximo de **20 puntos**:
+
+1. Prerrequisitos coherentes con el curso anterior.
+2. Objetivos observables y motivación del caso de biblioteca.
+3. Términos y siglas definidos antes de utilizarse.
+4. Símbolos y sintaxis leídos paso a paso.
+5. Modelo visual y explicación textual accesible.
+6. Ejemplo completo reproducible desde entorno limpio.
+7. Resultado esperado verificado, con versión/dataset y caso negativo.
+8. Ejercicios de reproducción, adaptación y diseño.
+9. Soluciones razonadas y errores habituales.
+10. Evaluación de transferencia sin copiar, fuentes oficiales y limitaciones.
+
+**Criterio interno:** no declarar una unidad completa con menos de **18/20**, ni siquiera si obtiene esa puntuación sin haber ejecutado el código cuando se exige integración.
+
+### Orden editorial de continuación
+
+**Prioridad A:** comprobar las semanas 01–07 con pruebas reales de salida, solucionar discrepancias, y mejorar las clases que un principiante no pueda explicar con palabras propias.
+
+**Prioridad B:** integrar ArcadeDB 08–10, revisar fielmente sintaxis por versión y comprobar ejemplos.
+
+**Prioridad C:** mejorar 15–17 como aplicaciones de calidad y arquitectura sobre el mismo catálogo.
+
+**Prioridad D:** desarrollar 18–24 desde sus primeras definiciones y con ejercicios evaluables; sustituir expresamente los borradores actuales, **no** añadir párrafos genéricos.
+
+**Conclusión:** la academia todavía **no** permite afirmar de forma sustentada que una persona pasará de cero a experta tras recorrer el contenido actual. La ruta señala el objetivo, pero el estándar de salida exige prácticas, comprobaciones y revisión pedagógica adicional.
