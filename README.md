@@ -1,6 +1,6 @@
 # Graph Academy Lab
 
-Academia web gratuita de 24 semanas para aprender grafos, Neo4j Aura, ArcadeDB, diccionarios semánticos, RDF, SKOS, OWL y GraphRAG.
+Academia web gratuita de 24 semanas para aprender grafos, Neo4j Aura, ArcadeDB, modelado de conocimiento, RDF, SKOS, OWL y GraphRAG.
 
 ## Contenido
 
