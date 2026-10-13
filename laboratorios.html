@@ -6,10 +6,10 @@
 </style><script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script></head>
 <body><header><a href="./" class="brand">◈ Graph <span>Academy Lab</span></a><a href="lecciones.html">← Volver al temario</a></header><main class="wrap"><div class="intro"><h1>Laboratorios prácticos</h1><p>Ejemplos reproducibles, pruebas automáticas, ejercicios y soluciones. Todos los datos son ficticios. La teoría se lee aquí; el código se descarga del repositorio.</p></div><div class="layout"><nav class="nav" id="nav" aria-label="Laboratorios"></nav><article class="article" id="article" aria-live="polite"><h1>Abriendo laboratorio…</h1></article></div></main>
 <script>
-const items=[["01","Modelado con Python"],["02","RDF, OWL y SHACL"],["03","Neo4j Aura y Cypher"],["04","Arquitectura Python"]];
-const id=/^0[1-4]$/.test(new URLSearchParams(location.search).get("lab")||"")?new URLSearchParams(location.search).get("lab"):"01";
+const items=[["01","Modelado con Python"],["02","RDF, OWL y SHACL"],["03","Neo4j Aura y Cypher"],["04","Arquitectura Python"],["07","Dublin Core y exportación RDF"]];
+const id=/^(0[1-4]|07)$/.test(new URLSearchParams(location.search).get("lab")||"")?new URLSearchParams(location.search).get("lab"):"01";
 const nav=document.getElementById("nav");nav.innerHTML=items.map(([n,label])=>'<a class="'+(n===id?'active':'')+'" href="?lab='+n+'">🧪 '+n+' · '+label+'</a>').join('')+'<a href="lecciones.html">📚 Volver a las lecciones</a>';
-const target="laboratorios/"+id+"-"+({"01":"modelado","02":"ontologias","03":"neo4j","04":"arquitectura"}[id])+".md";
+const target="laboratorios/"+id+"-"+({"01":"modelado","02":"ontologias","03":"neo4j","04":"arquitectura","07":"metadatos-y-exportacion-rdf"}[id])+".md";
 document.addEventListener("DOMContentLoaded",async()=>{
  const article=document.getElementById("article");
  try{
