@@ -2,7 +2,7 @@
 
 **Perfil de entrada:** Python y fundamentos de SQL. **Dedicación orientativa:** 8–10 h/semana.
 
-El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ontología* y *diccionario semántico*. No presupone que el proyecto necesite GraphRAG ni que un motor de grafos implemente automáticamente estándares W3C.
+El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ontología* y *catálogo de biblioteca digital*. No presupone que el proyecto necesite GraphRAG ni que un motor de grafos implemente automáticamente estándares W3C.
 
 | Semana | Objetivo | Entregable |
 |---|---|---|
@@ -16,7 +16,7 @@ El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ont
 | 08 | ArcadeDB: arquitectura y modelos | Documento comparativo |
 | 09 | ArcadeDB: consultas y APIs | Prototipo equivalente |
 | 10 | Comparativa práctica y criterios de selección | Informe de decisión |
-| 11 | Glosario, catálogo, taxonomía y ontología | Requisitos del diccionario |
+| 11 | Glosario, catálogo, taxonomía y ontología | Requisitos del catálogo |
 | 12 | SKOS: conceptos, etiquetas y jerarquías | Vocabulario Turtle |
 | 13 | RDF, URIs y SPARQL | Dataset y consultas |
 | 14 | OWL: clases, propiedades e inferencia | Ontología mínima |
@@ -27,7 +27,7 @@ El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ont
 | 19 | NLP: extracción y evaluación | Conjunto anotado |
 | 20 | Embeddings y recuperación | Comparativa de búsqueda |
 | 21 | GraphRAG: patrones, límites y evaluación | Prototipo con fuentes |
-| 22 | Integración del diccionario semántico | MVP |
+| 22 | Integración del catálogo de biblioteca digital | MVP |
 | 23 | Pruebas, seguridad y rendimiento | Informe de validación |
 | 24 | Documentación y demostración | Proyecto final |
 
@@ -36,7 +36,7 @@ El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ont
 1. Leer las referencias oficiales.
 2. Replicar un ejemplo pequeño.
 3. Resolver ejercicios sin copiar la solución.
-4. Aplicar el concepto al diccionario semántico.
+4. Aplicar el concepto al catálogo de biblioteca digital.
 5. Escribir una nota de decisiones y dudas.
 
 ## Rúbrica
@@ -51,6 +51,6 @@ El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ont
 - [Semana 01: fundamentos de grafos](semana-01.md)
 - [Semana 02: recorridos y algoritmos](semana-02.md)
 - [Semana 03: grafos de propiedades y RDF](semana-03.md)
-- [Caso práctico transversal](proyecto-diccionario.md)
+- [Caso práctico transversal](proyecto-catálogo.md)
 
 Las semanas 4–24 están planificadas, **todavía no redactadas en profundidad**.
