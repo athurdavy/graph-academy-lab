@@ -18,14 +18,14 @@ import networkx as nx
 
 g = nx.DiGraph()
 g.add_edges_from([
-    ("ConceptoCliente", "CampoCRM"),
-    ("CampoCRM", "TablaClientes"),
-    ("ConceptoCliente", "InformeVentas"),
-    ("InformeVentas", "TablaClientes"),
+    ("ConceptoLibro", "CampoCRM"),
+    ("CampoCRM", "TablaLibros"),
+    ("ConceptoLibro", "InformeVentas"),
+    ("InformeVentas", "TablaLibros"),
 ])
-print(nx.shortest_path(g, "ConceptoCliente", "TablaClientes"))
-print(list(nx.bfs_tree(g, "ConceptoCliente")))
-assert nx.has_path(g, "ConceptoCliente", "TablaClientes")
+print(nx.shortest_path(g, "ConceptoLibro", "TablaLibros"))
+print(list(nx.bfs_tree(g, "ConceptoLibro")))
+assert nx.has_path(g, "ConceptoLibro", "TablaLibros")
 ```
 
 ## Ejercicios
