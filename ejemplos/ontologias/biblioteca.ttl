@@ -1,0 +1,14 @@
+@prefix ex: <https://example.org/biblioteca/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:Libro a owl:Class .
+ex:LibroDigital a owl:Class .
+ex:LibroDigital <http://www.w3.org/2000/01/rdf-schema#subClassOf> ex:Libro .
+
+ex:libro001 a ex:Libro ;
+  ex:titulo "El mapa de los grafos" ;
+  ex:isbn "ISBN-001" .
+ex:libro002 a ex:Libro ;
+  ex:titulo "Rutas de conocimiento" ;
+  ex:isbn "ISBN-002" .
