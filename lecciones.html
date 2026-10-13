@@ -21,12 +21,12 @@ article h2{scroll-margin-top:25px}
 .study-footer{border-top:1px solid var(--line);margin-top:36px;padding-top:22px}
 .study-footer strong{color:var(--accent)}
 @media(max-width:570px){.toc-links{grid-template-columns:1fr}}
-</style>
+.study-progress{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:#1b3147;border:1px solid #3e6173;border-radius:11px;margin:14px 0 26px;flex-wrap:wrap}.study-progress span{font-size:13px;color:#d4e7f2}.study-progress button{font:inherit;font-size:13px;cursor:pointer;padding:9px 13px;border-radius:8px;background:#71dbc3;color:#08212b;border:0;font-weight:750}.study-progress button:disabled{opacity:.5}.study-progress button:focus-visible{outline:3px solid #a2c8ff;outline-offset:2px}</style>
 <script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 </head><body>
 <header><a class="brand" href="./">◈ Graph <span>Academy Lab</span></a><div class="actions"><a href="./">← Campus</a><a href="ruta.html">🧭 Ruta completa y orden</a><a href="laboratorios.html">🧪 Laboratorios guiados</a><a href="https://github.com/athurdavy/graph-academy-lab" target="_blank" rel="noopener">Código y datos ↗</a></div></header>
-<main class="layout"><aside class="sidebar"><h2>📚 Lecciones</h2><nav id="sidebar" aria-label="Índice de lecciones"></nav><p style="font-size:13px;color:var(--muted)">Las lecciones se leen aquí. Los bloques aún no desarrollados están señalados.</p></aside><div class="article"><div class="eyebrow" id="state">Formación gratuita · material público</div><article id="content"><h1>Abriendo lección…</h1></article><nav id="prevnext" class="prevnext" aria-label="Navegación entre lecciones"></nav></div></main>
+<main class="layout"><aside class="sidebar"><h2>📚 Lecciones</h2><nav id="sidebar" aria-label="Índice de lecciones"></nav><p style="font-size:13px;color:var(--muted)">Las lecciones se leen aquí. Los bloques aún no desarrollados están señalados.</p></aside><div class="article"><div class="eyebrow" id="state">Formación gratuita · material público</div><div class="study-progress"><span id="checkpoint-text">Lee, practica y comprueba</span><button type="button" id="checkpoint-button" disabled>Marcar clase practicada</button></div><article id="content"><h1>Abriendo lección…</h1></article><nav id="prevnext" class="prevnext" aria-label="Navegación entre lecciones"></nav></div></main>
 <script>
 const lessons=[["01","Fundamentos de grafos"],["02","Recorridos"],["03","Grafo de propiedades y RDF"],["04","Neo4j AuraDB"],["05","Consultas Cypher"],["06","Importación y calidad"],["07","Driver Python"],["08","ArcadeDB: arquitectura"],["09","ArcadeDB: consultas"],["10","Comparativa de motores"],["11","Introducción a ontologías"],["12","SKOS y SPARQL"],["13","OWL e inferencia"],["14","SHACL"],["15","Gobernanza"],["16","Procedencia"],["17","Arquitectura"],["18","Knowledge graphs"],["19","Extracción"],["20","Embeddings"],["21","GraphRAG"],["22","Integración"],["23","Pruebas"],["24","Demostración"]];
 const params=new URLSearchParams(location.search);const week=/^\d{1,2}$/.test(params.get("semana")||"")?String(Number(params.get("semana"))).padStart(2,"0"):"01";
@@ -70,6 +70,11 @@ document.addEventListener("DOMContentLoaded",async()=>{
   }
   const codeBlocks=Array.from(article.querySelectorAll("pre"));
   codeBlocks.forEach(pre=>{const btn=document.createElement("button");btn.className="copy-code";btn.type="button";btn.textContent="Copiar código";btn.addEventListener("click",async()=>{const code=pre.querySelector("code")?.textContent||pre.textContent;try{await navigator.clipboard.writeText(code);btn.textContent="Copiado ✓"}catch(e){btn.textContent="Selecciona el código para copiar"} });pre.parentNode.insertBefore(btn,pre)});
+  if(!params.get("tema")){
+    const key="gal-practiced-"+week;const button=document.getElementById("checkpoint-button");const label=document.getElementById("checkpoint-text");
+    const paint=()=>{const done=localStorage.getItem(key)==="true";label.textContent=done?"Práctica marcada como realizada":"Marca esta clase solo después de ejecutar los ejemplos";button.textContent=done?"Desmarcar práctica":"Marcar clase practicada";button.disabled=false};
+    button.addEventListener("click",()=>{const done=localStorage.getItem(key)==="true";localStorage.setItem(key,done?"false":"true");paint()});paint();
+  }else document.querySelector(".study-progress").style.display="none";
   const sourceLink=document.createElement("div");sourceLink.className="study-footer";sourceLink.innerHTML='<strong>Para aprenderlo de verdad</strong><p>Vuelve a explicar cada sección con tus palabras, ejecuta el ejemplo, cambia un dato y comprueba el resultado. Después resuelve los ejercicios sin mirar las soluciones.</p><a href="ruta.html">Volver a la ruta progresiva →</a>';article.appendChild(sourceLink);
   document.getElementById("state").textContent="Material de estudio · revisa el nivel y los ejercicios de cada unidad";document.title=(article.querySelector("h1")?.textContent||"Lección")+" | Graph Academy Lab";
  }catch(e){showMissing()}
