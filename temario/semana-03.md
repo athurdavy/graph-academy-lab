@@ -116,7 +116,7 @@ ORDER BY ?nombre
 
 Esto se parece a filtrar una tabla, pero el patrón trabaja sobre afirmaciones RDF; no depende de que cada recurso tenga exactamente las mismas columnas.
 
-Para practicar consultas de forma reproducible, estudia el [Laboratorio de SPARQL](../laboratorios/05-sparql.md) cuando esté publicado y disponible en el lector.
+Para practicar consultas de forma reproducible, continúa con [el laboratorio de metadatos y exportación RDF](../laboratorios/07-metadatos-y-exportacion-rdf.md), ya publicado, y más adelante ampliarás las consultas SPARQL.
 
 ## 7. Cuándo elegir qué modelo
 
