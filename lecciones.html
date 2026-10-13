@@ -3,6 +3,24 @@
 <meta name="description" content="Formación gratuita sobre grafos, Cypher, Neo4j Aura y ontologías. Teoría, diagramas, ejemplos y ejercicios.">
 <style>
 :root{color-scheme:dark;--bg:#0b1120;--panel:#141f32;--line:#304159;--muted:#b3c1d5;--accent:#76dec0}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f0f5ff;font:16px/1.75 system-ui,-apple-system,Segoe UI,sans-serif}a{color:#92c8ff}header{border-bottom:1px solid var(--line);padding:17px max(20px,calc((100vw - 1200px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#111b2c}header a{text-decoration:none}.brand{font-size:20px;font-weight:800}.brand span{color:var(--accent)}.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;max-width:1200px;margin:0 auto;padding:24px 16px 75px}.sidebar{align-self:start;position:sticky;top:20px;border:1px solid var(--line);background:var(--panel);border-radius:15px;padding:18px;max-height:calc(100vh - 40px);overflow:auto}.sidebar h2{font-size:18px;margin:0 0 12px}.sidebar a{display:block;padding:9px 11px;border-radius:8px;text-decoration:none;font-size:14px;color:#c9d5e7}.sidebar a:hover,.sidebar a.active{background:#263a57;color:#fff}.sidebar small{color:#9bb0c9}.article{border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:clamp(20px,4vw,50px);min-width:0}article h1{font-size:clamp(30px,4vw,43px);line-height:1.18;margin:10px 0 24px;letter-spacing:-1px}article h2{font-size:27px;border-top:1px solid var(--line);margin-top:43px;padding-top:25px}article h3{font-size:21px;margin-top:27px}article p,article li{color:#d0dced}article code:not(pre code){background:#23364c;color:#a5f6d8;border-radius:5px;padding:2px 5px;overflow-wrap:anywhere}article pre{padding:18px;border:1px solid #314866;background:#080f1d;overflow-x:auto;border-radius:11px;line-height:1.55;font-size:14px}article pre code{color:#bbdafa;white-space:pre}article img{display:block;max-width:100%;height:auto;border-radius:12px;margin:24px auto;border:1px solid #283b55}article blockquote{padding:11px 18px;margin:18px 0;border-left:4px solid var(--accent);background:#20334b;border-radius:0 8px 8px 0}article table{display:block;overflow:auto;border-collapse:collapse;width:100%;margin:20px 0}article td,article th{border:1px solid var(--line);padding:9px 12px;text-align:left}article th{background:#263b59}article strong{color:#fff}article input[type=checkbox]{accent-color:var(--accent)}.eyebrow{font-size:12px;font-weight:800;text-transform:uppercase;color:var(--accent);letter-spacing:.11em}.prevnext{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:23px;margin-top:45px}.prevnext a{padding:10px 14px;border:1px solid #526f8e;border-radius:9px;text-decoration:none}.tip{border:1px solid var(--line);background:#20334b;padding:18px;border-radius:11px}.actions{display:flex;gap:16px;flex-wrap:wrap}@media(max-width:820px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}.article{padding:20px 17px}}
+
+.navgroup{border-top:1px solid #2d4056;margin-top:8px;padding-top:5px}
+.navgroup>summary{list-style:none;cursor:pointer;padding:10px 9px;color:#c9ddf1;font-weight:700;font-size:14px}
+.navgroup>summary::-webkit-details-marker{display:none}
+.navgroup>summary:before{content:"⌄";display:inline-block;color:var(--accent);margin-right:7px}
+.navgroup div{padding-left:11px}
+.navgroup div a{font-size:13px;padding:7px 10px}
+.path-entry{background:#213650;color:#e3f4ff!important;font-weight:700;margin-bottom:8px}
+.in-page-toc{border:1px solid #3b5f76;background:#192d46;border-radius:13px;margin:20px 0 27px;padding:17px}
+.in-page-toc strong{color:#d7fff1;display:block;margin-bottom:10px}
+.toc-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px}
+.toc-links a{font-size:13px;text-decoration:none;color:#cbdff6;line-height:1.5;padding:7px;border-radius:6px}
+.toc-links a:hover{background:#274761}
+article h2{scroll-margin-top:25px}
+.copy-code{display:block;margin:26px 0 -22px auto;position:relative;z-index:1;background:#283f59;border:1px solid #597795;border-radius:7px;color:#e7f5ff;padding:5px 11px;cursor:pointer;font:inherit;font-size:12px}
+.study-footer{border-top:1px solid var(--line);margin-top:36px;padding-top:22px}
+.study-footer strong{color:var(--accent)}
+@media(max-width:570px){.toc-links{grid-template-columns:1fr}}
 </style>
 <script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
@@ -12,7 +30,21 @@
 <script>
 const lessons=[["01","Fundamentos de grafos"],["02","Recorridos"],["03","Grafo de propiedades y RDF"],["04","Neo4j AuraDB"],["05","Consultas Cypher"],["06","Importación y calidad"],["07","Driver Python"],["08","ArcadeDB: arquitectura"],["09","ArcadeDB: consultas"],["10","Comparativa de motores"],["11","Introducción a ontologías"],["12","SKOS y SPARQL"],["13","OWL e inferencia"],["14","SHACL"],["15","Gobernanza"],["16","Procedencia"],["17","Arquitectura"],["18","Knowledge graphs"],["19","Extracción"],["20","Embeddings"],["21","GraphRAG"],["22","Integración"],["23","Pruebas"],["24","Demostración"]];
 const params=new URLSearchParams(location.search);const week=/^\d{1,2}$/.test(params.get("semana")||"")?String(Number(params.get("semana"))).padStart(2,"0"):"01";
-const nav=document.getElementById("sidebar");nav.innerHTML=lessons.map(([n,t])=>'<a class="'+(n===week?'active':'')+'" href="?semana='+n+'">Semana '+n+' · '+t+'</a>').join('')+'<a href="examenes.html">📝 Preparación de exámenes y cuestionarios</a><a href="?tema=examen">📋 Guía oficial de los exámenes</a><a href="?tema=master">🎓 Ruta de experto · plan completo</a><a href="?tema=acreditacion">✅ Evaluación y acreditaciones externas</a><a href="?tema=protege">🧠 Taller Protégé y OWL</a><a href="?tema=graphdb">🗄️ Taller GraphDB y RDF</a><a href="?tema=arquitectura" class="'+(params.get("tema")==='arquitectura'?'active':'')+'">🏗 Arquitectura y bases de datos</a><a href="?tema=proyecto">📘 Proyecto: biblioteca ficticia</a>';
+const nav=document.getElementById("sidebar");
+const groups=[
+["01–03 · Fundamentos",0,3],
+["04–07 · Neo4j y Cypher",3,7],
+["08–10 · ArcadeDB",7,10],
+["11–14 · Ontologías y RDF",10,14],
+["15–17 · Calidad y arquitectura",14,17],
+["18–21 · Knowledge Graphs",17,21],
+["22–24 · Proyecto final",21,24]
+];
+nav.innerHTML=
+'<a class="path-entry" href="empezar.html">▶ Empieza aquí · Guía de alumno</a>'+
+'<a class="path-entry" href="ruta.html">🧭 Ruta completa y requisitos</a>'+
+groups.map(([title,start,end])=>'<details class="navgroup" '+(lessons.slice(start,end).some(([n])=>n===week)&&!params.get("tema")?'open':'')+'><summary>'+title+'</summary><div>'+lessons.slice(start,end).map(([n,t])=>'<a class="'+(n===week&&!params.get("tema")?'active':'')+'" href="?semana='+n+'">'+n+' · '+t+'</a>').join('')+'</div></details>').join('')+
+'<details class="navgroup" '+(params.get("tema")?'open':'')+'><summary>Especialización y recursos</summary><div><a href="examenes.html">Exámenes Neo4j</a><a href="?tema=examen">Guía de exámenes</a><a href="?tema=master">Plan experto</a><a href="?tema=acreditacion">Evaluaciones</a><a href="?tema=protege">Protégé y OWL</a><a href="?tema=graphdb">GraphDB y RDF</a><a href="?tema=arquitectura">Arquitectura</a><a href="?tema=proyecto">Biblioteca ficticia</a></div></details>';
 const target=params.get("tema")==="examen"?"temario/preparacion-certificaciones.md":params.get("tema")==="acreditacion"?"temario/evaluacion-y-acreditacion.md":params.get("tema")==="protege"?"temario/especializacion-protege-owl.md":params.get("tema")==="graphdb"?"temario/especializacion-graphdb.md":params.get("tema")==="master"?"temario/master-profesional.md":params.get("tema")==="arquitectura"?"temario/arquitectura-bases-de-datos.md":params.get("tema")==="proyecto"?"temario/proyecto-biblioteca.md":"temario/semana-"+week+".md";
 const current=lessons.findIndex(([n])=>n===week);
 const recommendedLab=Number(week)<=3?"01":Number(week)<=7?"03":Number(week)<=10?"04":Number(week)<=14?"02":"04";document.getElementById("prevnext").insertAdjacentHTML("afterbegin",'<a href="laboratorios.html?lab='+recommendedLab+'">🧪 Laboratorio relacionado</a>');document.getElementById("prevnext").innerHTML+=(current>0?'<a href="?semana='+lessons[current-1][0]+'">← Semana '+lessons[current-1][0]+'</a>':'<span></span>')+(current>=0&&current<lessons.length-1?'<a href="?semana='+lessons[current+1][0]+'">Semana '+lessons[current+1][0]+' →</a>':'');
@@ -28,7 +60,18 @@ document.addEventListener("DOMContentLoaded",async()=>{
   const article=document.getElementById("content");article.innerHTML=clean;
   for(const img of article.querySelectorAll("img")){const raw=img.getAttribute("src");if(raw&&!/^(?:https?:|data:)/i.test(raw)){img.src=new URL(raw,new URL(target,location.href)).href}img.loading="lazy"}
   for(const a of article.querySelectorAll("a")){const raw=a.getAttribute("href");if(!raw)continue;if(/\.md(?:#.*)?$/i.test(raw)){const resolved=new URL(raw,new URL(target,location.href));const match=resolved.pathname.match(/semana-(\d{2})\.md$/);if(match){a.href="?semana="+match[1]}else if(resolved.pathname.endsWith("master-profesional.md")){a.href="?tema=master"}else if(resolved.pathname.endsWith("arquitectura-bases-de-datos.md")){a.href="?tema=arquitectura"}else if(resolved.pathname.endsWith("proyecto-biblioteca.md")){a.href="?tema=proyecto"}else if(/\/laboratorios\/(0[1-4]|07)-/.test(resolved.pathname)){const matchLab=resolved.pathname.match(/\/laboratorios\/(0[1-4]|07)-/);a.href="laboratorios.html?lab="+matchLab[1]}else if(resolved.pathname.endsWith("preparacion-certificaciones.md")){a.href="?tema=examen"}else if(resolved.pathname.endsWith("especializacion-graphdb.md")){a.href="?tema=graphdb"}else if(resolved.pathname.endsWith("especializacion-protege-owl.md")){a.href="?tema=protege"}else{a.href=resolved.href}}else if(/^(https?:)/.test(raw)){a.target="_blank";a.rel="noopener noreferrer"}else if(!raw.startsWith("#") && !raw.startsWith("?")){a.href=new URL(raw,new URL(target,location.href)).href}}
-  document.getElementById("state").textContent="Lección completa · teoría, código y práctica";document.title=(article.querySelector("h1")?.textContent||"Lección")+" | Graph Academy Lab";
+  const toc=document.createElement("nav");toc.className="in-page-toc";toc.setAttribute("aria-label","Secciones de esta lección");
+  const headings=Array.from(article.querySelectorAll("h2"));
+  if(headings.length){
+    const title=document.createElement("strong");title.textContent="En esta lección";toc.appendChild(title);
+    const list=document.createElement("div");list.className="toc-links";
+    headings.forEach((h,i)=>{h.id="apartado-"+(i+1);const a=document.createElement("a");a.href="#"+h.id;a.textContent=(i+1)+". "+h.textContent.replace(/^\\d+\\.\\s*/,"");list.appendChild(a)});
+    toc.appendChild(list);article.insertBefore(toc,article.firstChild.nextSibling);
+  }
+  const codeBlocks=Array.from(article.querySelectorAll("pre"));
+  codeBlocks.forEach(pre=>{const btn=document.createElement("button");btn.className="copy-code";btn.type="button";btn.textContent="Copiar código";btn.addEventListener("click",async()=>{const code=pre.querySelector("code")?.textContent||pre.textContent;try{await navigator.clipboard.writeText(code);btn.textContent="Copiado ✓"}catch(e){btn.textContent="Selecciona el código para copiar"} });pre.parentNode.insertBefore(btn,pre)});
+  const sourceLink=document.createElement("div");sourceLink.className="study-footer";sourceLink.innerHTML='<strong>Para aprenderlo de verdad</strong><p>Vuelve a explicar cada sección con tus palabras, ejecuta el ejemplo, cambia un dato y comprueba el resultado. Después resuelve los ejercicios sin mirar las soluciones.</p><a href="ruta.html">Volver a la ruta progresiva →</a>';article.appendChild(sourceLink);
+  document.getElementById("state").textContent="Material de estudio · revisa el nivel y los ejercicios de cada unidad";document.title=(article.querySelector("h1")?.textContent||"Lección")+" | Graph Academy Lab";
  }catch(e){showMissing()}
 });
 </script></body></html>
