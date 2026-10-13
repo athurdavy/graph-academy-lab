@@ -87,6 +87,49 @@ Observa la **dirección** del triple: aquí `libro001 dcterms:creator autor001` 
 
 **Importante:** `example.org` es un espacio de ejemplo; un proyecto de producción debe diseñar IRIs estables y bajo control del propietario del vocabulario.
 
+## 2.1. En RDF también aparecen dos puntos, pero no significan una etiqueta
+
+En la primera clase viste `:Libro` en **Cypher**, que significa una **etiqueta de nodo**. Ahora vamos a leer `ex:libro001` en **Turtle**, un formato para escribir datos RDF.
+
+**No son el mismo lenguaje.**
+
+Mira estas dos líneas:
+
+~~~turtle
+@prefix ex: <https://example.org/biblioteca/> .
+ex:libro001 ex:titulo "El mapa de los grafos" .
+~~~
+
+### Traduce cada carácter importante
+
+- `@prefix` es una declaración de abreviatura.
+- `ex:` es el **nombre corto** de un espacio de identificadores.
+- `<https://example.org/biblioteca/>` es la parte larga que reemplaza ese prefijo. Los signos `<` y `>` delimitan una IRI completa en Turtle.
+- `ex:libro001` significa la IRI completa `https://example.org/biblioteca/libro001`; **no es un nodo con etiqueta libro001**.
+- `ex:titulo` significa la IRI `https://example.org/biblioteca/titulo`, utilizada aquí como predicado.
+- `"El mapa de los grafos"` es un **literal de texto**.
+- El punto final `.` termina la afirmación RDF.
+
+Lee la segunda línea como una frase: **«el recurso identificado como libro001 tiene como título El mapa de los grafos»**.
+
+### Compara los tres usos sin mezclarlos
+
+| Expresión | Lenguaje | Significado |
+|---|---|---|
+| `(:Libro)` | Cypher | Nodo que tiene la **etiqueta** Libro |
+| `"libro:ISBN-001"` | Python | **Cadena de texto** que elegimos como ID de laboratorio |
+| `ex:libro001` | Turtle | **IRI abreviada** mediante un prefijo RDF |
+
+Que los tres contengan el carácter `:` **no** significa que estén hablando de la misma operación. Aprenderlos como si fueran idénticos te generaría confusión al cambiar de herramienta.
+
+**Pregunta:** ¿si reemplazas `ex:` por `biblioteca:` en todas las líneas y actualizas su declaración con la **misma IRI base**, cambia el significado del RDF? **No**: cambia la abreviatura textual, pero sigue identificando los mismos recursos.
+
+**Otra pregunta:** ¿qué pasa si cambias únicamente el texto `"El mapa de los grafos"` por `"Un libro diferente"`? Cambia el **objeto literal** de esa afirmación; estás declarando otro título.
+
+En esta etapa es suficiente que puedas leer estos triples. No necesitas conocer todavía SPARQL, OWL ni razonadores.
+
+---
+
 ## 3. Qué es un triple RDF
 
 En `sujeto predicado objeto`:
