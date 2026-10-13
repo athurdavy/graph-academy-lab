@@ -1,6 +1,6 @@
-# Máster técnico de grafos de conocimiento y ontologías — ruta de experto
+# Plan de especialización técnica en grafos de conocimiento y ontologías — ruta de experto
 
-> **Estado:** plan maestro propuesto de 42 semanas, con materiales en distintos grados de desarrollo. No es una titulación universitaria, una acreditación oficial ni una certificación emitida por Neo4j, W3C, Stanford u Ontotext. El curso es un itinerario independiente en español, basado en fuentes primarias y normas públicas.
+> **Estado:** propuesta avanzada, no un programa terminado ni acreditado. La **ruta ordenada vigente** se consulta en [Itinerario de 42 competencias](../ruta.html). Esta tabla es una planificación de especialización y no una colección de 42 lecciones finalizadas. No concede una titulación universitaria ni certificación de Neo4j, Stanford, W3C u Ontotext.
 
 ## Objetivo y alcance
 
