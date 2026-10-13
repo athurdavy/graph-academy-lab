@@ -1,94 +1,116 @@
-# Semana 04 — Neo4j AuraDB y modelado de un grafo
+# Semana 04 — Neo4j AuraDB desde cero: nodos, relaciones y Cypher
 
-**Caso público ficticio:** una biblioteca digital que relaciona libros, autores, temas y lectores. No se usan datos empresariales ni información privada.
+![Biblioteca ficticia: nodos y relaciones](../assets/biblioteca-grafo.svg)
 
-![Modelo de biblioteca digital](../assets/biblioteca-grafo.svg)
+**Itinerario:** fundamentos → esta clase → [semana 05: consultar Cypher](semana-05.md). **Tiempo:** 7–10 horas. **Entrada:** sabes algo de Python/SQL pero nunca has usado una base de grafos. **Objetivo final:** crear, consultar y verificar una biblioteca ficticia sin copiar las soluciones.
 
-## Antes de empezar: qué estamos cambiando respecto a Python
+## 1. ¿Para qué sirve Neo4j?
 
-En las [semanas 1–3](semana-01.md) construimos el modelo, aprendimos a recorrerlo en NetworkX y distinguimos el grafo de propiedades de RDF. **Ahora no vamos a volver a diseñar todo desde cero:** implementaremos la misma biblioteca ficticia en una base de datos persistente.
+La biblioteca almacena autores, libros, temas y lectores. En SQL usaríamos tablas y claves foráneas. En Neo4j usamos un **grafo de propiedades**: nodos con etiquetas y propiedades, unidos por relaciones **dirigidas y tipadas**.
 
-NetworkX es una librería para trabajar con grafos en memoria dentro de Python. Neo4j es un **sistema de gestión de bases de datos** que almacena nodos y relaciones, ejecuta Cypher y puede atender consultas de una aplicación a través de un protocolo de red.
+| Concepto | Ejemplo | Explicación |
+|---|---|---|
+| Nodo | `(:Autor)` | Representa una entidad identificable |
+| Etiqueta | `Autor` | Agrupa nodos de una categoría; no es automáticamente una clase OWL |
+| Propiedad | `id:'A-001'` | Atributo para describir o identificar |
+| Relación | `-[:ESCRIBIO]->` | Conexión con dirección y significado |
+| Patrón | `(a:Autor)-[:ESCRIBIO]->(l:Libro)` | Estructura que buscamos en Cypher |
 
-**Neo4j AuraDB** es una oferta gestionada. *Instancia* no equivale a *base de datos*: una instancia representa recursos y configuración de servicio. Los planes tienen características y límites distintos; no presupongas multi-base de datos en cualquier plan.
+**No presupongas que grafos sustituyen siempre a SQL.** Si una consulta es más expresiva en Cypher, eso aún no prueba que rinda más rápido. Lo evaluaremos con criterios reales.
 
-### Objetivo mínimo de la primera sesión
+### Lee el diagrama antes del código
 
-1. Abrir el entorno y ejecutar \`RETURN 1 AS prueba\`.
-2. Crear **un autor y un libro** con \`MERGE\`.
-3. Unirlos con una relación \`ESCRIBIO\`.
-4. Consultar el patrón con \`MATCH\`.
-5. Comprobar que ejecutar el mismo \`MERGE\` de nuevo no crea otro autor con la misma clave.
+Marina Soler `ESCRIBIO` un libro. Ese libro `TRATA_SOBRE` Grafos. Un lector `LEYO` el libro. La flecha indica desde qué entidad parte la afirmación; `ESCRIBIO` no significa lo mismo que `LEYO`. Cada tipo de relación responde preguntas distintas.
 
-Este ejercicio pequeño se hace **antes** de cargar todo el CSV; si no sabes recuperar estos dos nodos, el problema no se resuelve añadiendo más datos.
+## 2. AuraDB, instancias y herramientas: qué es cada cosa
 
-### Cypher explicado paso a paso
+**Neo4j** es la base de datos; **Cypher** es su lenguaje; **AuraDB** es el servicio gestionado. Una **instancia** de AuraDB es el entorno del servicio; una **base de datos** contiene los datos. Los planes pueden diferir en el soporte de varias bases de datos por instancia.
 
-~~~cypher
-MERGE (a:Autor {id:'A-DEMO'})
-SET a.nombre = 'Autora de ejemplo'
-MERGE (l:Libro {isbn:'ISBN-DEMO'})
-SET l.titulo = 'Libro de ejemplo'
+**Prepara un laboratorio:**
+
+1. Entra en [Neo4j Aura Console](https://console.neo4j.io/).
+2. Crea una instancia de pruebas según las opciones de tu cuenta y espera a que esté disponible.
+3. Guarda la contraseña y el URI de conexión **en privado**. No los subas a GitHub.
+4. Abre la consola de consultas de la instancia y ejecuta:
+
+```cypher
+RETURN 1 AS comprobacion;
+```
+
+**Resultado esperado:** una tabla con una columna `comprobacion` y una única fila con valor `1`. Si no aparece, comprueba la instancia y el acceso antes de continuar.
+
+**¿Qué aprendiste?** `RETURN` devuelve expresiones aunque aún no exista ningún nodo; `AS` da nombre a la columna.
+
+## 3. El primer nodo: CREATE y MATCH
+
+En una instancia de laboratorio **limpia**:
+
+```cypher
+CREATE (a:Autor {id:'A-DEMO', nombre:'Marina Soler'});
+```
+
+Línea por línea:
+- `CREATE` crea un patrón nuevo.
+- `a` es una variable que representa el nodo durante la consulta.
+- `:Autor` es su etiqueta.
+- `id` y `nombre` son propiedades.
+- El identificador `A-DEMO` es inventado y se usa solo para estudiar.
+
+Ahora recupera el nodo:
+
+```cypher
+MATCH (a:Autor {id:'A-DEMO'})
+RETURN a.id AS id, a.nombre AS nombre;
+```
+
+**Resultado esperado:** una fila con `A-DEMO` y `Marina Soler`. `MATCH` **busca** patrones: no crea datos.
+
+**Experimento:** repite `CREATE` y consulta de nuevo. Sin restricciones, podrías tener dos nodos con el mismo ID. Acabas de descubrir por qué el modelado necesita integridad y una estrategia idempotente.
+
+## 4. Dos nodos y una relación: MERGE y SET
+
+En un entorno limpio ejecuta:
+
+```cypher
+MERGE (a:Autor {id:'A-001'})
+SET a.nombre = 'Marina Soler'
+MERGE (l:Libro {isbn:'ISBN-001'})
+SET l.titulo = 'El mapa de los grafos', l.anio = 2022
 MERGE (a)-[:ESCRIBIO]->(l);
-~~~
+```
 
-- \`MERGE (a:Autor {id:'A-DEMO'})\` busca o crea un nodo con etiqueta \`Autor\` e \`id\` indicado.
-- \`SET a.nombre\` establece o actualiza una propiedad.
-- \`MERGE (l:Libro ...)\` identifica el libro con una clave estable.
-- \`MERGE (a)-[:ESCRIBIO]->(l)\` expresa una relación dirigida entre los dos nodos ya vinculados por las variables \`a\` y \`l\`.
+**Interpreta cada operación:**
 
-Consultamos:
+1. `MERGE` intenta encontrar un Autor con ese ID y crearlo si no existe.
+2. `SET` asigna o actualiza propiedades.
+3. El segundo `MERGE` identifica el Libro por su ISBN ficticio.
+4. El último `MERGE` localiza o crea la relación `ESCRIBIO` entre **esos nodos ya vinculados a variables**.
 
-~~~cypher
-MATCH (a:Autor {id:'A-DEMO'})-[:ESCRIBIO]->(l:Libro)
-RETURN a.nombre AS autor, l.titulo AS titulo;
-~~~
+**Matiz importante:** `MERGE` no detecta que dos identificadores distintos representan a la misma persona. La unicidad y la normalización de identidades se diseñan por separado.
 
-**Resultado esperado:** una fila: «Autora de ejemplo» y «Libro de ejemplo». \`MATCH\` busca; no crea. \`RETURN\` selecciona los datos mostrados.
+Pregunta: ¿qué autora escribió el libro?
 
-**Error deliberado:** sustituye \`->\` por \`<-\` en el patrón y observa si devuelve filas. Eso enseña que la dirección forma parte de la consulta.
+```cypher
+MATCH (a:Autor {id:'A-001'})-[:ESCRIBIO]->(l:Libro)
+RETURN a.nombre AS autora, l.titulo AS libro;
+```
 
-Para evitar mezclar ejemplos temporales con el dataset principal usa un entorno de laboratorio limpio o identificadores separados. No ejecutes eliminaciones indiscriminadas en una instancia compartida.
+**Resultado esperado:** Marina Soler — El mapa de los grafos.
 
-### ¿En qué se diferencia de SQL?
+### La dirección importa
 
-En SQL, una relación de autoría entre libros y autores podría representarse mediante una tabla \`autoria(autor_id, isbn)\`, con claves foráneas. En el modelo de propiedades, la autoría es una **arista dirigida de tipo ESCRIBIO**. En ambos casos hay reglas de identidad y consistencia que debes diseñar.
+Cambia `->` por `<-` en la relación anterior. **Esperas cero filas** porque el patrón ya no coincide con la dirección registrada. Después prueba:
 
-**Próxima lección:** [Semana 05 — consultas Cypher](semana-05.md), donde iremos de un patrón fijo a filtros, agrupaciones y consultas multi-salto.
+```cypher
+MATCH (l:Libro {isbn:'ISBN-001'})<-[:ESCRIBIO]-(a:Autor)
+RETURN l.titulo, a.nombre;
+```
 
-## Objetivos
+Encontrarás de nuevo la autora. Buscar desde el libro **no cambia la dirección almacenada**.
 
-1. Crear una instancia de prueba AuraDB y acceder a la interfaz de consultas.
-2. Diferenciar nodos, etiquetas, propiedades y relaciones en Cypher.
-3. Definir identificadores estables y restricciones de unicidad.
-4. Justificar cuándo conviene una relación y cuándo una propiedad.
+## 5. ¿Por qué no basta con MERGE? Restricciones
 
-## 1. Del modelo conceptual a los datos
-
-La biblioteca contiene libros (identificados por ISBN ficticio), autores (ID), temas (código) y lectores (ID). Las relaciones `ESCRIBIO`, `TRATA_SOBRE` y `LEYO` conectan entidades. El grafo es una **representación de un catálogo de biblioteca**, no una ontología formal.
-
-### Decisiones de modelado
-
-- `Libro` tiene `isbn`, `titulo`, `anio`.
-- `Autor` tiene `id`, `nombre`.
-- `Tema` tiene `codigo`, `nombre`.
-- `Lector` tiene `id`, `alias`.
-- `LEYO` puede tener `fecha`; si se necesita historial de múltiples lecturas, se puede modelar una entidad `Lectura` o relaciones con identificador propio.
-
-**Antipatrón:** almacenar todos los autores en una cadena separada por comas en `Libro.autores` cuando necesitas navegar entre autores y obras.
-
-## 2. Preparar AuraDB
-
-1. Entra en [Neo4j Aura](https://console.neo4j.io/) y crea una instancia de pruebas según las opciones disponibles en tu cuenta.
-2. Guarda la contraseña **fuera de GitHub**. La consola muestra el URI de conexión.
-3. Abre el explorador de consultas de Neo4j y ejecuta `RETURN 1 AS prueba;`.
-4. Comprueba que devuelve una fila con `prueba = 1`.
-
-**Seguridad:** no publiques URI privados, usuarios, contraseñas ni capturas con credenciales. Usa exclusivamente datos ficticios de este curso.
-
-## 3. Crear restricciones
-
-Ejecuta estas consultas una a una. Una restricción de unicidad impide que dos nodos con la misma etiqueta compartan el mismo valor de la propiedad indicada; no exige que todos los nodos tengan esa propiedad.
+En un entorno sin duplicados existentes:
 
 ```cypher
 CREATE CONSTRAINT libro_isbn IF NOT EXISTS
@@ -96,57 +118,150 @@ FOR (l:Libro) REQUIRE l.isbn IS UNIQUE;
 
 CREATE CONSTRAINT autor_id IF NOT EXISTS
 FOR (a:Autor) REQUIRE a.id IS UNIQUE;
-
-CREATE CONSTRAINT tema_codigo IF NOT EXISTS
-FOR (t:Tema) REQUIRE t.codigo IS UNIQUE;
-
-CREATE CONSTRAINT lector_id IF NOT EXISTS
-FOR (l:Lector) REQUIRE l.id IS UNIQUE;
 ```
 
-## 4. Cargar un conjunto de datos reproducible
+Una restricción `IS UNIQUE` impide que dos nodos con la etiqueta indicada compartan el mismo **valor presente** de la propiedad. **No** exige que todos los nodos tengan esa propiedad. Las restricciones de existencia y de clave de nodo tienen requisitos específicos por edición.
 
-Ejecuta el fichero [`ejemplos/neo4j/01_biblioteca.cypher`](../ejemplos/neo4j/01_biblioteca.cypher) en el editor de consultas. Los identificadores son ficticios.
+Si el experimento inicial generó dos `Autor` con el mismo ID, la restricción puede fallar. No es un problema del comando: los datos ya incumplen la regla. Usa una base limpia para repetir la actividad o investiga de forma controlada antes de limpiar.
 
-Observa `MERGE`: localiza o crea un patrón. Para evitar duplicados, usa claves de negocio estables y restricciones. En la importación de relaciones, primero hacemos `MERGE` de los nodos por clave y después de la relación; no fusionamos un patrón complejo sin cuidado.
-
-## 5. Comprobar el grafo
+**Diagnóstico de IDs duplicados (solo lectura):**
 
 ```cypher
-MATCH (l:Libro) RETURN l.titulo, l.anio ORDER BY l.anio;
+MATCH (a:Autor)
+WHERE a.id IS NOT NULL
+WITH a.id AS id, count(*) AS total
+WHERE total > 1
+RETURN id, total;
 ```
+
+No ejecutes comandos de borrado indiscriminados en una base compartida.
+
+## 6. Cargar la biblioteca completa y comprobarla
+
+Ahora carga el fichero público ficticio [01_biblioteca.cypher](../ejemplos/neo4j/01_biblioteca.cypher). Lee sus comandos antes de ejecutarlos. El dataset contiene tres libros, dos autores, tres temas y un lector, más sus relaciones. Trabaja preferiblemente en un entorno de pruebas limpio para que los recuentos sean predecibles.
+
+Consulta los autores de los libros:
 
 ```cypher
 MATCH (a:Autor)-[:ESCRIBIO]->(l:Libro)
-RETURN a.nombre AS autor, collect(l.titulo) AS libros
-ORDER BY autor;
+RETURN a.nombre AS autora, collect(l.titulo) AS libros
+ORDER BY autora;
+```
+
+**Resultado esperado:** Marina tiene dos libros (*El mapa de los grafos*, *Rutas de conocimiento*), y Diego Ríos tiene *Historias del océano*. `collect` agrupa resultados relacionados en una lista.
+
+Encuentra libros de Grafos:
+
+```cypher
+MATCH (l:Libro)-[:TRATA_SOBRE]->(t:Tema {codigo:'GRAFOS'})
+RETURN l.isbn AS isbn, l.titulo AS titulo
+ORDER BY isbn;
+```
+
+**Resultado esperado:** `ISBN-001` y `ISBN-002`.
+
+Pregunta de dos saltos: ¿sobre qué temas escribe cada autor?
+
+```cypher
+MATCH (a:Autor)-[:ESCRIBIO]->(l:Libro)-[:TRATA_SOBRE]->(t:Tema)
+RETURN DISTINCT a.nombre AS autora, t.nombre AS tema
+ORDER BY autora, tema;
+```
+
+`DISTINCT` evita repetir un par autora/tema si varios libros de la autora pertenecen al mismo tema. **No elimina datos duplicados almacenados**; únicamente elimina filas repetidas del resultado.
+
+## 7. Errores que debes comprender
+
+| Problema | Causa habitual | Comprobación |
+|---|---|---|
+| No aparecen filas | Flecha, etiqueta o tipo incorrectos | Dibuja el patrón |
+| Se duplican autores | `CREATE` repetido o claves inconsistentes | Busca IDs duplicados |
+| Falla una constraint | Ya existen duplicados | Consulta los valores repetidos |
+| `MATCH` no crea relación | `MATCH` solo busca | Usa `MERGE` de forma controlada |
+| Una consulta devuelve demasiado | Patrón sin restricciones ni filtros | Examina selectividad y resultados |
+| Hay resultados inesperados | Se mezcló el experimento con la carga | Usa IDs separados y entorno limpio |
+
+## 8. Ejercicios: primero intenta, después mira las soluciones
+
+**Nivel 1 — Reproducción**
+
+1. Crea un Autor nuevo `A-003` y un Libro nuevo `ISBN-004` con `MERGE`. Relaciónalos con `ESCRIBIO`.
+2. Busca libros publicados desde 2020, ordenados por año.
+3. Consulta qué lector ha leído `ISBN-001`.
+
+**Nivel 2 — Adaptación**
+
+4. Añade `Tema:HISTORIA` y conecta tu libro nuevo con `TRATA_SOBRE`.
+5. Ejecuta dos veces la carga del nuevo libro y verifica que no duplicas su ID.
+6. Recupera libros sin tema mediante una comprobación de ausencia de patrón.
+
+**Nivel 3 — Diseño**
+
+7. Un lector puede leer un libro varias veces. ¿Guardarías fechas en relaciones, múltiples relaciones o una entidad Lectura? Razona según el historial.
+8. Dos autoras tienen el mismo nombre pero distinto ID. ¿Por qué no fusionarlas automáticamente?
+9. Diseña una consulta de dos saltos y explica el significado de cada arista.
+
+## 9. Soluciones razonadas
+
+### Ejercicios 1 y 2
+
+```cypher
+MERGE (a:Autor {id:'A-003'})
+SET a.nombre='Elena Vidal'
+MERGE (l:Libro {isbn:'ISBN-004'})
+SET l.titulo='Atlas de conexiones', l.anio=2025
+MERGE (a)-[:ESCRIBIO]->(l);
+```
+
+El patrón usa claves estables. `SET` actualiza propiedades del mismo nodo.
+
+```cypher
+MATCH (l:Libro)
+WHERE l.anio >= 2020
+RETURN l.isbn, l.titulo, l.anio
+ORDER BY l.anio DESC, l.titulo;
+```
+
+`WHERE` filtra **antes** de devolver las columnas. `ORDER BY` controla el orden visual del resultado.
+
+### Ejercicios 3 y 6
+
+```cypher
+MATCH (p:Lector)-[:LEYO]->(l:Libro {isbn:'ISBN-001'})
+RETURN p.id AS id, p.alias AS lector;
 ```
 
 ```cypher
-MATCH (l:Libro)-[:TRATA_SOBRE]->(t:Tema)
-RETURN t.nombre AS tema, count(l) AS libros
-ORDER BY libros DESC;
+MATCH (l:Libro)
+WHERE NOT EXISTS {
+  MATCH (l)-[:TRATA_SOBRE]->(:Tema)
+}
+RETURN l.isbn, l.titulo;
 ```
 
-## 6. Ejercicios
+Una ausencia de relación describe el **estado almacenado**, no una verdad sobre el mundo real. La segunda consulta no demuestra que el libro carezca de tema fuera de la base.
 
-1. Añade un libro y un autor; ejecuta dos veces la carga y explica por qué el número de nodos no debería crecer.
-2. Añade `idioma` a `Libro`. ¿Por qué es una propiedad y no necesariamente un nodo?
-3. Modela un premio literario. ¿Conviene nodo, propiedad o relación? Razona según las consultas que quieras responder.
-4. Intenta crear dos libros con el mismo `isbn` y observa el error de unicidad.
+## 10. Comprobación antes de pasar a Cypher avanzado
 
-### Soluciones y criterios
+Responde sin mirar:
 
-- Ejercicio 1: `MERGE (l:Libro {isbn: 'ISBN-004'}) SET l.titulo = '...' ` y la misma técnica para `Autor`; verifica con `MATCH (l:Libro) RETURN count(l)`.
-- Ejercicio 2: un idioma como atributo simple suele bastar; si necesitas metadatos propios del idioma o relaciones entre idiomas, considera un nodo.
-- Ejercicio 3: un nodo `Premio` permite fecha, categoría, jurado y múltiples premiados; un booleano `premiado` perdería información.
+- ¿Qué diferencia hay entre `CREATE`, `MATCH` y `MERGE`?
+- ¿Por qué importa la flecha de `ESCRIBIO`?
+- ¿Para qué sirve `SET`?
+- ¿Por qué `IS UNIQUE` no obliga a tener ISBN?
+- ¿Qué hacen `collect` y `DISTINCT`?
+- ¿Por qué no se deben mezclar ejemplos de prueba con datos de producción?
 
-## 7. Entregable
+**Prueba final:** añade un autor, un libro y un tema nuevos, conecta ambos patrones, ejecuta una consulta de dos saltos y repite la carga sin duplicar IDs. Guarda el código, el resultado y una explicación.
 
-Captura **sin credenciales** del grafo, fichero Cypher reproducible, descripción de etiquetas y relaciones, y un párrafo sobre decisiones de modelado.
+**Siguiente:** [Semana 05 — MATCH, WHERE, WITH, OPTIONAL MATCH y agregación](semana-05.md).
 
-## Referencias oficiales
+## Documentación oficial
 
-- [Aura: conectar aplicaciones](https://neo4j.com/docs/aura/connecting-applications/overview/)
-- [Cypher: restricciones](https://neo4j.com/docs/cypher-manual/current/schema/constraints/create-constraints/)
-- [GraphAcademy: modelado](https://graphacademy.neo4j.com/courses/modeling-fundamentals/)
+- [AuraDB: crear una instancia](https://neo4j.com/docs/aura/getting-started/create-instance/)
+- [Cypher Manual: MATCH](https://neo4j.com/docs/cypher-manual/current/clauses/match/)
+- [Cypher Manual: MERGE](https://neo4j.com/docs/cypher-manual/current/clauses/merge/)
+- [Cypher Manual: restricciones](https://neo4j.com/docs/cypher-manual/current/schema/constraints/create-constraints/)
+- [GraphAcademy: Cypher Fundamentals](https://graphacademy.neo4j.com/courses/cypher-fundamentals/)
+
+**Estado editorial:** ejemplos descritos y fundamentados en documentación oficial, todavía no verificados en una instancia Aura real durante esta actualización. No se marca como práctica validada hasta ejecutar y comprobar los resultados.
