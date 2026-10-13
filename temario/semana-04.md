@@ -22,6 +22,80 @@ La biblioteca almacena autores, libros, temas y lectores. En SQL usaríamos tabl
 
 Marina Soler `ESCRIBIO` un libro. Ese libro `TRATA_SOBRE` Grafos. Un lector `LEYO` el libro. La flecha indica desde qué entidad parte la afirmación; `ESCRIBIO` no significa lo mismo que `LEYO`. Cada tipo de relación responde preguntas distintas.
 
+## 1.1. Aprende a leer Cypher como una frase
+
+**Cypher es el lenguaje de Neo4j.** Igual que en Python `print()` tiene un significado, Cypher tiene símbolos propios. No interpretes sus dos puntos como los de un texto Python o como un prefijo RDF.
+
+Empezamos con una única línea que todavía **no se ejecuta**:
+
+~~~cypher
+(a:Autor {id: "A-001", nombre: "Marina Soler"})
+~~~
+
+- `(` y `)`: señalan que hablamos de un **nodo** dentro de un patrón.
+- `a`: **variable temporal** para utilizar ese nodo más adelante en la consulta. No es su identificador.
+- `:Autor`: **etiqueta**; clasifica al nodo como Autor.
+- `{` y `}`: agrupan las **propiedades**, los datos de la entidad.
+- `id` y `nombre`: son nombres de propiedades.
+- `"A-001"` y `"Marina Soler"`: son los valores de esas propiedades.
+
+En lenguaje natural significa: **«Un nodo de la categoría Autor, al que llamo a durante esta consulta, con id A-001 y nombre Marina Soler»**.
+
+### ¿En qué se diferencian CREATE, MATCH y MERGE?
+
+Estas instrucciones utilizan patrones similares, pero **hacen cosas diferentes**:
+
+~~~cypher
+CREATE (a:Autor {id: "A-001"})
+~~~
+
+Lee: **«crea un nodo nuevo»**. Si lo ejecutas dos veces, intentará crear dos nodos; una restricción de unicidad puede impedir la duplicación.
+
+~~~cypher
+MATCH (a:Autor {id: "A-001"})
+RETURN a
+~~~
+
+Lee: **«busca un nodo Autor cuyo id sea A-001 y muéstralo»**. No crea ninguno.
+
+~~~cypher
+MERGE (a:Autor {id: "A-001"})
+RETURN a
+~~~
+
+Lee: **«busca el patrón y créalo si no existe»**. No es una deduplicación mágica de personas: depende de las claves y restricciones que hayas modelado.
+
+### ¿Por qué las relaciones usan corchetes?
+
+~~~cypher
+(a:Autor)-[:ESCRIBIO]->(l:Libro)
+~~~
+
+Léelo con calma, sin ejecutarlo todavía:
+
+1. `(a:Autor)` representa un nodo Autor.
+2. `-` es parte de la conexión.
+3. `[` y `]` delimitan el **patrón de relación**.
+4. `:ESCRIBIO` indica el **tipo de relación**. Los dos puntos aquí **no indican una etiqueta de nodo**, sino un tipo de relación.
+5. `->` indica que la relación **apunta hacia el Libro**.
+6. `(l:Libro)` representa el segundo nodo.
+
+**Traducción:** «Un autor escribió un libro». Eso representa la **dirección y el significado** de la relación. El patrón no tiene efecto por sí mismo: `MATCH` busca esa estructura; `CREATE` intenta crearla; `MERGE` busca o crea según su semántica.
+
+### Prueba de comprensión antes de abrir Neo4j
+
+**Pregunta A.** ¿Qué significa `a`? Respuesta: una variable que identifica temporalmente un nodo en la consulta, no la clave permanente del autor.
+
+**Pregunta B.** ¿Qué significa `:Autor`? Respuesta: la etiqueta de **nodo**.
+
+**Pregunta C.** ¿Qué significa `:ESCRIBIO` dentro de los corchetes? Respuesta: el tipo de **relación**; un símbolo parecido puede tener funciones distintas según dónde se coloque.
+
+**Pregunta D.** ¿Por qué no podemos invertir la flecha sin pensar? Respuesta: porque estaríamos buscando o expresando otra orientación de la afirmación.
+
+**No continúes** hasta poder leer los tres ejemplos de este apartado como frases en castellano.
+
+---
+
 ## 2. AuraDB, instancias y herramientas: qué es cada cosa
 
 **Neo4j** es la base de datos; **Cypher** es su lenguaje; **AuraDB** es el servicio gestionado. Una **instancia** de AuraDB es el entorno del servicio; una **base de datos** contiene los datos. Los planes pueden diferir en el soporte de varias bases de datos por instancia.
