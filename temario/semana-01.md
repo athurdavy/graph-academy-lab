@@ -4,6 +4,56 @@
 
 **Unidad 1 de 42 · Bloque: fundamentos.** Tiempo orientativo: 8–12 horas. **Antes de comenzar:** saber ejecutar Python y comprender qué es una tabla SQL. **Después:** [Semana 02 — recorridos](semana-02.md).
 
+## Antes de empezar: por qué aparece el símbolo de dos puntos
+
+**No tienes que saber Neo4j ni RDF para comenzar.** Vamos a traducir las expresiones que encontrarás, una a una.
+
+Primero piensa en una biblioteca: Marina Soler escribió un libro. Dibujamos dos **nodos** (Marina y el libro) y una **relación** dirigida de Marina hacia el libro. En este momento no necesitamos escribir ningún código.
+
+**Una etiqueta no es una persona ni un libro concreto.** «Libro» indica qué tipo de entidad representamos. «ISBN-001» identifica un libro específico. «El mapa de los grafos» es su título, no su identificador.
+
+### Los dos puntos no significan siempre lo mismo
+
+| Escritura | Lenguaje o contexto | Qué significa |
+|---|---|---|
+| `:Libro` | Cypher (Neo4j) | Etiqueta que clasifica un nodo como Libro |
+| `(l:Libro)` | Cypher (Neo4j) | Patrón de nodo con etiqueta Libro; `l` es una variable temporal |
+| `{titulo: "El mapa"}` | Cypher (Neo4j) | Propiedad llamada titulo cuyo valor es El mapa |
+| `"autor:A-001"` | Python en nuestro laboratorio | **Una cadena de texto elegida por nosotros** como identificador; los dos puntos no son una instrucción de Python |
+| `ex:Libro` | Turtle/RDF, más adelante | Un identificador abreviado con el prefijo `ex:`; **no es una etiqueta de Neo4j** |
+
+El error sería enseñar que los dos puntos tienen un significado universal. **Su función depende del lenguaje y de dónde aparezcan.**
+
+### Aprende a leer el patrón, sin memorizarlo
+
+Esta es una representación de un nodo en Cypher. **Todavía no estamos creando nada**:
+
+~~~cypher
+(l:Libro {isbn: "ISBN-001", titulo: "El mapa"})
+~~~
+
+- Los **paréntesis** indican un nodo en el patrón de Cypher.
+- `l` es el nombre temporal con el que nos referimos a ese nodo **dentro de la consulta**.
+- `:Libro` dice que es un nodo con la **etiqueta** Libro.
+- Las **llaves** contienen sus propiedades.
+- `isbn` es el nombre de una propiedad y `"ISBN-001"` es su valor de texto.
+- `titulo` es otra propiedad y `"El mapa"` es su valor.
+
+**Traducción al castellano:** «Un nodo al que llamaré l, de la categoría Libro, identificado con ISBN-001 y cuyo título es El mapa».
+
+¿Para qué existe la variable `l`? Para poder pedir luego su título o relacionarlo con otro nodo. **No es un identificador permanente** del libro.
+
+### Cuatro preguntas para saber si has entendido
+
+1. ¿Pueden cien libros diferentes llevar la etiqueta `:Libro`? **Sí**, todos comparten la categoría.
+2. ¿Es `titulo` otra entidad? **No en este modelo inicial**: es un dato del Libro.
+3. ¿La cadena Python `"autor:A-001"` crea automáticamente un nodo Autor? **No**: es texto; NetworkX no interpreta el prefijo como una etiqueta.
+4. ¿`(l:Libro)` crea un libro por sí solo? **No**: es un patrón que necesita una instrucción como `CREATE` o `MATCH`, que veremos más adelante.
+
+**Regla de esta academia:** ningún signo nuevo se da por sabido. Primero conocerás su significado y verás cómo cambia el resultado al utilizarlo; después escribirás instrucciones completas.
+
+---
+
 ## 1. ¿Qué problema vamos a resolver?
 
 Una biblioteca ficticia almacena libros, autores, temas y lectores. Queremos responder:
