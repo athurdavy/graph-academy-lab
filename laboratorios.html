@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Laboratorios prácticos | Graph Academy Lab</title><meta name="description" content="Laboratorios de grafos, RDF, Neo4j y arquitectura con Python, tests y soluciones.">
+<style>
+:root{color-scheme:dark;--bg:#0b1120;--panel:#141f32;--line:#304159;--muted:#bbc7da;--accent:#76dec0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f1f5ff;font:16px/1.75 system-ui,-apple-system,Segoe UI,sans-serif}a{color:#92c8ff}header{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:18px max(20px,calc((100vw - 1150px)/2));background:#121d2f;border-bottom:1px solid var(--line)}header a{text-decoration:none}.brand{font-weight:800;font-size:20px}.brand span{color:var(--accent)}.wrap{max-width:1150px;margin:auto;padding:26px 16px 70px}.intro{margin:6px 0 20px}.intro h1{font-size:clamp(30px,5vw,47px);line-height:1.15;margin:0 0 8px}.intro p{color:var(--muted);max-width:800px}.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:22px}.nav{align-self:start;position:sticky;top:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:17px}.nav a{display:block;padding:12px;border-radius:9px;text-decoration:none;color:#cfdded}.nav a.active,.nav a:hover{background:#2a425e;color:#fff}.article{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:clamp(18px,4vw,46px);min-width:0}.article h1{font-size:clamp(26px,4vw,39px);line-height:1.25}.article h2{border-top:1px solid var(--line);padding-top:22px;margin-top:35px}.article p,.article li{color:#d1ddec}.article pre{overflow:auto;border-radius:10px;padding:18px;background:#09111e;color:#c9dfff;font-size:14px;line-height:1.5}.article code:not(pre code){background:#2b3d53;padding:2px 5px;border-radius:4px;color:#a4ebd9;overflow-wrap:anywhere}.article img{display:block;max-width:100%;height:auto;border:1px solid #3a5170;border-radius:12px;margin:20px auto}.article table{display:block;overflow-x:auto;border-collapse:collapse}.article th,.article td{border:1px solid #415573;padding:8px 11px;text-align:left}.article blockquote{background:#263851;border-left:3px solid var(--accent);margin:15px 0;padding:8px 17px}.actions{display:flex;flex-wrap:wrap;gap:10px;padding-top:30px}.actions a{padding:10px 15px;border:1px solid #52718c;border-radius:10px;text-decoration:none}@media(max-width:750px){.layout{grid-template-columns:1fr}.nav{position:static}}
+</style><script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script></head>
+<body><header><a href="./" class="brand">◈ Graph <span>Academy Lab</span></a><a href="lecciones.html">← Volver al temario</a></header><main class="wrap"><div class="intro"><h1>Laboratorios prácticos</h1><p>Ejemplos reproducibles, pruebas automáticas, ejercicios y soluciones. Todos los datos son ficticios. La teoría se lee aquí; el código se descarga del repositorio.</p></div><div class="layout"><nav class="nav" id="nav" aria-label="Laboratorios"></nav><article class="article" id="article" aria-live="polite"><h1>Abriendo laboratorio…</h1></article></div></main>
+<script>
+const items=[["01","Modelado con Python"],["02","RDF, OWL y SHACL"],["03","Neo4j Aura y Cypher"],["04","Arquitectura Python"]];
+const id=/^0[1-4]$/.test(new URLSearchParams(location.search).get("lab")||"")?new URLSearchParams(location.search).get("lab"):"01";
+const nav=document.getElementById("nav");nav.innerHTML=items.map(([n,label])=>'<a class="'+(n===id?'active':'')+'" href="?lab='+n+'">🧪 '+n+' · '+label+'</a>').join('')+'<a href="lecciones.html">📚 Volver a las lecciones</a>';
+const target="laboratorios/"+id+"-"+({01:"modelado",02:"ontologias",03:"neo4j",04:"arquitectura"}[id])+".md";
+document.addEventListener("DOMContentLoaded",async()=>{
+ const article=document.getElementById("article");
+ try{
+ const response=await fetch(target,{cache:"no-cache"});
+ if(!response.ok)throw Error("Fichero no disponible");
+ const source=await response.text();
+ if(!window.marked||!window.DOMPurify)throw Error("No se cargaron los recursos de lectura");
+ article.innerHTML=DOMPurify.sanitize(marked.parse(source,{gfm:true}));
+ for(const img of article.querySelectorAll("img")){const raw=img.getAttribute("src");if(raw && !/^(?:https?:|data:)/i.test(raw))img.src=new URL(raw,new URL(target,location.href)).href;img.loading="lazy"}
+ for(const link of article.querySelectorAll("a")){const raw=link.getAttribute("href");if(!raw||raw.startsWith("#"))continue;if(/^https?:/i.test(raw)){link.target="_blank";link.rel="noopener noreferrer"}else{const resolved=new URL(raw,new URL(target,location.href));link.href=resolved.href;link.target="_blank";link.rel="noopener noreferrer"}}
+ article.insertAdjacentHTML("beforeend",'<div class="actions"><a href="lecciones.html">← Temario</a><a href="https://github.com/athurdavy/graph-academy-lab/tree/main/laboratorios" target="_blank" rel="noopener noreferrer">Descargar código y tests ↗</a></div>');
+ document.title=(article.querySelector("h1")?.textContent||"Laboratorio")+" | Graph Academy Lab";
+ }catch(e){article.innerHTML='<h1>El laboratorio no se ha podido cargar</h1><p>Comprueba la conexión e inténtalo otra vez. Si falla la librería del visor, los archivos siguen disponibles en el repositorio público.</p>'}
+});
+</script></body></html>
