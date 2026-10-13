@@ -1,5 +1,10 @@
 # Semana 24 — Entrega final: aplicación demostrable y criterio técnico
 
+> **Estado pedagógico: unidad introductoria, no equivalente a formación experta.** Este tema requiere todavía una lección desarrollada desde sus prerrequisitos, implementación reproducible de extremo a extremo, ejercicios con respuestas razonadas y evaluación con casos negativos. Lee esta página como orientación, no como certificado de dominio.
+
+**Antes de continuar:** asegúrate de entender la terminología del [glosario](glosario-desde-cero.md) y de haber completado los bloques de modelado, Cypher, Python y calidad de datos. Si una sigla o una función aparecen sin explicación suficiente en este borrador, no se consideran conocimientos que ya debas poseer.
+
+
 **Caso:** biblioteca digital ficticia · **Dedicación sugerida:** 8–10 horas.
 
 ## Objetivos de la unidad
