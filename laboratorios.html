@@ -6,10 +6,10 @@
 </style><script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script></head>
 <body><header><a href="./" class="brand">◈ Graph <span>Academy Lab</span></a><a href="lecciones.html">← Volver al temario</a></header><main class="wrap"><div class="intro"><h1>Laboratorios prácticos</h1><p>Ejemplos reproducibles, pruebas automáticas, ejercicios y soluciones. Todos los datos son ficticios. La teoría se lee aquí; el código se descarga del repositorio.</p></div><div class="layout"><nav class="nav" id="nav" aria-label="Laboratorios"></nav><article class="article" id="article" aria-live="polite"><h1>Abriendo laboratorio…</h1></article></div></main>
 <script>
-const items=[["01","Modelado con Python"],["02","RDF, OWL y SHACL"],["03","Neo4j Aura y Cypher"],["04","Arquitectura Python"],["07","Dublin Core y exportación RDF"]];
-const id=/^(0[1-4]|07)$/.test(new URLSearchParams(location.search).get("lab")||"")?new URLSearchParams(location.search).get("lab"):"01";
+const items=[["01","Modelado con Python"],["02","RDF, OWL y SHACL"],["03","Neo4j Aura y Cypher"],["04","Arquitectura Python"],["07","Dublin Core y exportación RDF"],["08","Evaluación final Neo4j"],["09","Soluciones razonadas de Neo4j"]];
+const id=/^(0[1-4]|07|08|09)$/.test(new URLSearchParams(location.search).get("lab")||"")?new URLSearchParams(location.search).get("lab"):"01";
 const nav=document.getElementById("nav");nav.innerHTML=items.map(([n,label])=>'<a class="'+(n===id?'active':'')+'" href="?lab='+n+'">🧪 '+n+' · '+label+'</a>').join('')+'<a href="lecciones.html">📚 Volver a las lecciones</a>';
-const target="laboratorios/"+id+"-"+({"01":"modelado","02":"ontologias","03":"neo4j","04":"arquitectura","07":"metadatos-y-exportacion-rdf"}[id])+".md";
+const target="laboratorios/"+id+"-"+({"01":"modelado","02":"ontologias","03":"neo4j","04":"arquitectura","07":"metadatos-y-exportacion-rdf","08":"evaluacion-neo4j","09":"evaluacion-neo4j-soluciones"}[id])+".md";
 document.addEventListener("DOMContentLoaded",async()=>{
  const article=document.getElementById("article");
  try{
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
  if(!window.marked||!window.DOMPurify)throw Error("No se cargaron los recursos de lectura");
  article.innerHTML=DOMPurify.sanitize(marked.parse(source,{gfm:true}));
  for(const img of article.querySelectorAll("img")){const raw=img.getAttribute("src");if(raw && !/^(?:https?:|data:)/i.test(raw))img.src=new URL(raw,new URL(target,location.href)).href;img.loading="lazy"}
- for(const link of article.querySelectorAll("a")){const raw=link.getAttribute("href");if(!raw||raw.startsWith("#"))continue;if(/^https?:/i.test(raw)){link.target="_blank";link.rel="noopener noreferrer"}else{const resolved=new URL(raw,new URL(target,location.href));link.href=resolved.href;link.target="_blank";link.rel="noopener noreferrer"}}
+ for(const link of article.querySelectorAll("a")){const raw=link.getAttribute("href");if(!raw||raw.startsWith("#"))continue;if(/^https?:/i.test(raw)){link.target="_blank";link.rel="noopener noreferrer"}else{const resolved=new URL(raw,new URL(target,location.href));const lab=resolved.pathname.match(/\/laboratorios\/(08-evaluacion-neo4j-soluciones|08-evaluacion-neo4j)\.md$/);if(lab){link.href="?lab="+(lab[1].endsWith("-soluciones")?"09":"08")}else{link.href=resolved.href;link.target="_blank";link.rel="noopener noreferrer"}}}
  article.insertAdjacentHTML("beforeend",'<div class="actions"><a href="lecciones.html">← Temario</a><a href="https://github.com/athurdavy/graph-academy-lab/tree/main/laboratorios" target="_blank" rel="noopener noreferrer">Descargar código y tests ↗</a></div>');
  document.title=(article.querySelector("h1")?.textContent||"Laboratorio")+" | Graph Academy Lab";
  }catch(e){article.innerHTML='<h1>El laboratorio no se ha podido cargar</h1><p>Comprueba la conexión e inténtalo otra vez. Si falla la librería del visor, los archivos siguen disponibles en el repositorio público.</p>'}
