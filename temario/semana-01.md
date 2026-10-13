@@ -24,6 +24,144 @@ La decisión **no** es «SQL es malo y los grafos son buenos». Un sistema relac
 
 Esta tabla presenta datos, pero si la autora escribe veinte libros, repetir su nombre en cada fila no es una buena forma de identificarla. Necesitamos identificadores estables y normalización, sea cual sea la tecnología.
 
+## 1.1. Cómo decidir qué es un nodo sin saber todavía nada de grafos
+
+Vamos a empezar con una frase: **«Marina Soler escribió El mapa de los grafos y Alex lo leyó»**.
+
+Antes de hablar de Neo4j o de Python, subraya las **cosas** y las **acciones**:
+
+- **Marina Soler**: una persona que desempeña el papel de autora.
+- **El mapa de los grafos**: un libro.
+- **Alex**: una persona que desempeña el papel de lector.
+- **Escribió**: una relación entre autora y libro.
+- **Leyó**: otra relación entre lector y libro.
+
+Una primera regla útil es que solemos representar como **nodos** las entidades que necesitamos identificar, recuperar y relacionar de forma independiente. Las conexiones con significado propio se representan como **relaciones**.
+
+No es una regla universal. Por ejemplo, el título de un libro normalmente puede ser una *propiedad* del nodo Libro; no necesitas convertir cada palabra del título en un nodo. Elegir demasiados nodos complica el modelo. Elegir muy pocos hace imposible representar relaciones importantes.
+
+### Construcción gradual: primero tres nodos
+
+~~~text
+(Autor: Marina) ──ESCRIBIO──▶ (Libro: El mapa de los grafos)
+                                  ▲
+                                  │ LEYO
+                             (Lector: Alex)
+~~~
+
+En el dibujo hay **tres nodos** y **dos relaciones**. La flecha de LEYO parte de Alex y termina en el libro. La flecha de ESCRIBIO parte de Marina y termina en el libro.
+
+Añadamos ahora un tema:
+
+~~~text
+(Autor) ──ESCRIBIO──▶ (Libro) ──TRATA_SOBRE──▶ (Tema)
+                        ▲
+                        │ LEYO
+                     (Lector)
+~~~
+
+Ahora hay **cuatro nodos y tres relaciones**. Si una autora escribe un segundo libro, añadimos un nodo Libro y otra relación ESCRIBIO; **no duplicamos a Marina**.
+
+### ¿Cómo se traduce esto a tablas SQL?
+
+Para entender por qué un grafo no es una tecnología misteriosa, compara modelos:
+
+| Base relacional | Grafo de propiedades |
+|---|---|
+| Fila en tabla \`autores\` | Nodo \`:Autor\` |
+| Fila en tabla \`libros\` | Nodo \`:Libro\` |
+| Tabla intermedia \`autorias\` con dos claves foráneas | Relación \`ESCRIBIO\` |
+| Columna \`titulo\` | Propiedad \`titulo\` de Libro |
+| Clave primaria \`autor_id\` | Propiedad identificadora \`id\`, protegida después mediante una restricción |
+
+**No son equivalencias perfectas:** SQL y Neo4j tienen reglas de almacenamiento y consulta diferentes. Pero reconocer la correspondencia te permite partir de algo que ya conoces.
+
+### Pregunta de control
+
+Un libro tiene un ISBN y un título. ¿Crearías tres nodos (Libro, ISBN, Título) o un nodo Libro con propiedades? Para **este caso básico**, usa un nodo Libro con \`isbn\` y \`titulo\`: ambos describen la entidad. Más adelante podrías convertir algún dato en entidad independiente **si necesitas relacionarlo con otras entidades o gestionar su identidad**.
+
+## 1.2. Identidad, nombre y duplicados: un error que cuesta dinero
+
+Una identidad distingue **qué cosa es** de **cómo se llama**.
+
+Imagina dos obras tituladas *Introducción a los grafos*. Tener el mismo título no significa que sean la misma obra. Un autor puede cambiar su nombre público y seguir siendo la misma persona.
+
+Por eso el laboratorio usa identificadores como:
+
+- \`autor:A-001\`: la entidad autora.
+- \`libro:ISBN-001\`: la entidad libro.
+- \`tema:GRAFOS\`: el concepto de clasificación.
+- \`lector:L-001\`: la entidad lectora.
+
+Son **identificadores inventados para clase**. \`ISBN-001\` no es un ISBN comercial validado: es un código didáctico para ver cómo funciona una clave.
+
+### Qué ocurre si eliges una clave equivocada
+
+Supón que identificas autores por su nombre. Llegan dos personas llamadas «Marina Soler»; podrías fusionar indebidamente sus libros. Ahora supón que identificas libros por título; dos ediciones o dos obras homónimas podrían fusionarse también.
+
+Una pregunta profesional de modelado siempre es: **«¿qué representa exactamente un nodo y cómo sé que dos registros corresponden a la misma entidad?»**.
+
+## 1.3. Cardinalidad explicada con situaciones
+
+**Cardinalidad** significa cuántas entidades de un tipo pueden relacionarse con entidades de otro tipo. No es una característica específica de los grafos.
+
+- Una autora puede escribir varios libros.
+- Un libro puede tener varios autores.
+- Una persona puede leer varios libros.
+- Un libro puede ser leído por varios lectores.
+
+Eso es una relación **muchos a muchos**: el modelo no obliga a asignar un único autor a cada libro.
+
+**Ejercicio mental:** si Marina y Diego escriben el mismo libro, ¿cuántos nodos Libro necesitas? **Uno**, si ambos se refieren a la misma entidad de libro bajo nuestro criterio de identidad. Necesitarás **dos relaciones de autoría**, una desde cada autor.
+
+## 1.4. Primer contacto con Python: construir solo dos nodos
+
+Antes de ejecutar el laboratorio completo, instala NetworkX como indica el apartado 5 y prueba este programa pequeño:
+
+~~~python
+import networkx as nx
+
+grafo = nx.MultiDiGraph()
+grafo.add_node("autor:A-001", tipo="Autor", nombre="Marina Soler")
+grafo.add_node("libro:ISBN-001", tipo="Libro", titulo="El mapa de los grafos")
+
+grafo.add_edge(
+    "autor:A-001",
+    "libro:ISBN-001",
+    tipo="ESCRIBIO",
+)
+
+print("Nodos:", grafo.number_of_nodes())
+print("Relaciones:", grafo.number_of_edges())
+print("¿Marina escribió el libro?:",
+      grafo.has_edge("autor:A-001", "libro:ISBN-001"))
+print("¿Existe relación inversa?:",
+      grafo.has_edge("libro:ISBN-001", "autor:A-001"))
+~~~
+
+**Resultado esperado:**
+
+~~~text
+Nodos: 2
+Relaciones: 1
+¿Marina escribió el libro?: True
+¿Existe relación inversa?: False
+~~~
+
+### Qué significa cada instrucción
+
+1. \`import networkx as nx\` carga la biblioteca de Python.
+2. \`MultiDiGraph()\` crea un **multigrafo dirigido** en memoria: las flechas tienen dirección y puede haber más de una relación entre dos nodos.
+3. \`add_node\` añade una entidad y le asigna datos.
+4. \`add_edge\` crea una relación **desde el primer identificador al segundo**.
+5. \`has_edge\` comprueba si existe una conexión en el sentido indicado.
+
+**Experimento obligatorio:** cambia los dos identificadores de orden en \`has_edge\`. ¿Qué resultado esperas? Predícelo antes de ejecutarlo.
+
+**Límite del ejemplo:** NetworkX representa aquí nuestras relaciones con el atributo \`tipo\`; Neo4j almacena además **tipos de relación como parte de su modelo de datos**. Son conceptos parecidos para aprender, pero no idénticos internamente.
+
+---
+
 ## 2. Anatomía de un grafo
 
 Un grafo dirigido es \(G=(V,E)\): `V` es el conjunto de vértices y `E` representa aristas ordenadas. La arista `(A,B)` no implica `(B,A)`.
