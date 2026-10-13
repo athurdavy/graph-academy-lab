@@ -84,11 +84,11 @@ Una **cola** (*queue*, en inglés) es como la fila del supermercado:
 - A esta regla se le llama **FIFO**, siglas de *First In, First Out*: «primero en entrar, primero en salir».
 - BFS utiliza una cola para recordar qué nodos debe examinar después.
 
-En Python, la clase \`deque\` de \`collections\` ofrece una cola eficiente.
+En Python, la clase `deque` de `collections` ofrece una cola eficiente.
 
 ### Primer código Python: BFS desde cero
 
-Crea un archivo \`bfs.py\`:
+Crea un archivo `bfs.py`:
 
 ~~~python
 from collections import deque
@@ -131,15 +131,15 @@ print(bfs_camino(grafo, "A", "D"))
 
 ### Entiende el código línea por línea
 
-- \`grafo\` es un diccionario. La clave A tiene como vecinos B y C.
-- \`pendientes\` almacena pares: nodo y camino recorrido hasta él.
-- \`visitados\` es un conjunto que evita procesar un mismo nodo repetidamente.
-- \`while pendientes\` significa «mientras queden nodos por revisar».
-- \`popleft()\` retira el primer elemento de la cola, por eso el recorrido avanza por niveles.
-- Cuando el nodo coincide con \`objetivo\`, devolvemos el camino.
-- Si no hay camino, devolvemos \`None\`.
+- `grafo` es un diccionario. La clave A tiene como vecinos B y C.
+- `pendientes` almacena pares: nodo y camino recorrido hasta él.
+- `visitados` es un conjunto que evita procesar un mismo nodo repetidamente.
+- `while pendientes` significa «mientras queden nodos por revisar».
+- `popleft()` retira el primer elemento de la cola, por eso el recorrido avanza por niveles.
+- Cuando el nodo coincide con `objetivo`, devolvemos el camino.
+- Si no hay camino, devolvemos `None`.
 
-**Prueba un cambio:** sustituye \`grafo["B"] = ["D"]\` por \`grafo["B"] = []\`. Ahora la ruta corta desaparece y BFS debe encontrar **A → C → E → D**.
+**Prueba un cambio:** sustituye `grafo["B"] = ["D"]` por `grafo["B"] = []`. Ahora la ruta corta desaparece y BFS debe encontrar **A → C → E → D**.
 
 ### ¿Cuándo conviene BFS?
 
@@ -220,7 +220,7 @@ def dfs_camino(grafo, inicio, objetivo):
 print(dfs_camino(grafo, "A", "D"))
 ~~~
 
-**Resultado esperado con el diccionario mostrado:** \`['A', 'C', 'E', 'D']\`. La lista de vecinos de A es \`['B','C']\`; al usar \`pop()\` (último elemento), DFS elige C antes que B.
+**Resultado esperado con el diccionario mostrado:** `['A', 'C', 'E', 'D']`. La lista de vecinos de A es `['B','C']`; al usar `pop()` (último elemento), DFS elige C antes que B.
 
 **Qué debes entender:** cambiar el orden de vecinos puede cambiar **qué ruta** descubre primero DFS. La respuesta no es necesariamente única.
 
@@ -333,7 +333,7 @@ print(nx.shortest_path_length(rutas, "A", "D", weight="coste"))
 3
 ~~~
 
-**¿Por qué se pasa \`weight="coste"\`?** Porque hemos llamado \`coste\` a la propiedad numérica de cada arista. NetworkX necesita saber qué atributo debe sumar para comparar alternativas.
+**¿Por qué se pasa `weight="coste"`?** Porque hemos llamado `coste` a la propiedad numérica de cada arista. NetworkX necesita saber qué atributo debe sumar para comparar alternativas.
 
 **¿Y si no lo pasas?** La función considera todas las conexiones con el mismo coste de un salto y recupera la ruta de menos aristas.
 
@@ -390,9 +390,9 @@ El mapa de los grafos (Libro)
 Grafos (Tema)
 ~~~
 
-Aquí el camino \`Autor → Libro → Tema\` tiene **dos saltos**. Es útil para contestar: «¿de qué temas escribe Marina?».
+Aquí el camino `Autor → Libro → Tema` tiene **dos saltos**. Es útil para contestar: «¿de qué temas escribe Marina?».
 
-**Pero hay una diferencia crucial:** cuando utilizas un algoritmo general de camino más corto, ese algoritmo **no sabe** qué significan las etiquetas \`ESCRIBIO\` o \`TRATA_SOBRE\`. Solo recorre conexiones.
+**Pero hay una diferencia crucial:** cuando utilizas un algoritmo general de camino más corto, ese algoritmo **no sabe** qué significan las etiquetas `ESCRIBIO` o `TRATA_SOBRE`. Solo recorre conexiones.
 
 Para contestar preguntas fiables del catálogo debes seleccionar **tipos de relación apropiados**. Más adelante lo expresarás con Cypher:
 
@@ -413,13 +413,13 @@ No necesitas memorizar todavía Cypher. Por ahora observa cómo el patrón refle
 
 **Nivel 2 — Modificar código**
 
-4. En el diccionario Python, elimina \`B → D\`. ¿Qué ruta devuelve BFS?
+4. En el diccionario Python, elimina `B → D`. ¿Qué ruta devuelve BFS?
 5. Cambia el coste A → B de 10 a 1 y el de B → D de 10 a 1. ¿Qué ruta de coste mínimo esperas ahora?
 6. Cambia el orden de los vecinos de A. ¿Por qué puede cambiar la primera ruta de DFS sin alterar la existencia de caminos?
 
 **Nivel 3 — Aplicar al modelo**
 
-7. Construye un grafo simple con Autor → Libro → Tema. Escribe una función Python que recupere solo las relaciones \`TRATA_SOBRE\`.
+7. Construye un grafo simple con Autor → Libro → Tema. Escribe una función Python que recupere solo las relaciones `TRATA_SOBRE`.
 8. Dibuja una biblioteca donde un libro tenga dos temas. ¿Aumenta el número de nodos y el número de saltos de Autor a cada Tema?
 9. ¿Sería correcto usar «camino más corto» para concluir que un autor tiene experiencia profesional en un tema? Razona qué datos faltan.
 
@@ -447,7 +447,7 @@ Puedes continuar cuando seas capaz de hacer estas cinco cosas **sin copiar**:
 - Explicar BFS, DFS, FIFO y LIFO sin acrónimos sin definir.
 - Mostrar un ejemplo donde DFS encuentre una ruta más larga que BFS.
 - Mostrar un ejemplo donde una ruta con más saltos cueste menos.
-- Ejecutar NetworkX y explicar por qué el argumento \`weight\` cambia el resultado.
+- Ejecutar NetworkX y explicar por qué el argumento `weight` cambia el resultado.
 
 Si una explicación sigue sin encajarte, repite el ejemplo de cinco nodos y cambia **una sola conexión**. Predecir el resultado antes de ejecutar es una forma muy útil de aprender a programar algoritmos.
 
