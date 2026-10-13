@@ -81,7 +81,32 @@ function weekCard(n,index){
   const labUrl="laboratorios.html?lab="+labGroup[active];
   const title=weekTitles[n];
   const desc=weekDesc[n];
-  const exercise=modules[active].lessons[index%modules[active].lessons.length][2];
+  const practiceByWeek={
+1:"Distingue nodos, relaciones, categorías e instancias en el diagrama y crea el grafo con Python.",
+2:"Busca caminos y comprueba qué cambia al invertir una relación.",
+3:"Representa el mismo dato en Cypher y en triples RDF.",
+4:"Crea la biblioteca ficticia y verifica las restricciones de unicidad.",
+5:"Consulta autores, libros y temas con MATCH, WHERE y RETURN.",
+6:"Importa el CSV dos veces y comprueba que MERGE no multiplica libros.",
+7:"Conecta desde Python, parametriza una consulta y gestiona resultados vacíos.",
+8:"Define tipos de vértices y relaciones en una base ArcadeDB de laboratorio.",
+9:"Recupera libros usando la API de ArcadeDB sin incrustar credenciales.",
+10:"Documenta criterios comparables de consultas, despliegue y mantenimiento.",
+11:"Distingue clases OWL, conceptos SKOS e individuos del catálogo.",
+12:"Consulta el vocabulario con SPARQL y recorre la relación skos:broader.",
+13:"Escribe dos axiomas y explica las inferencias que producen.",
+14:"Elimina el título de un libro ficticio y observa el informe SHACL.",
+15:"Propón cinco reglas de calidad y elige cómo comprobar cada una.",
+16:"Documenta fuente, fecha y revisión de una relación del catálogo.",
+17:"Implementa un repositorio Python intercambiable y sus tests.",
+18:"Añade procedencia a una relación Libro-Tema y consulta su origen.",
+19:"Evalúa precisión y exhaustividad de una extracción de entidades.",
+20:"Compara recuperación textual y semántica usando preguntas ficticias.",
+21:"Diseña una respuesta GraphRAG con citas y un caso de abstención.",
+22:"Integra una consulta de biblioteca en un servicio Python.",
+23:"Prepara tests y examina el plan de una consulta Cypher.",
+24:"Prepara una demostración reproducible del proyecto de biblioteca."
+};const exercise=practiceByWeek[n];
   return '<details class="week-card" '+(index===0?'open':'')+'><summary><span class="week-number">'+String(n).padStart(2,"0")+'</span><span class="week-heading"><strong>'+esc(title)+'</strong><small>Semana '+n+' · Conceptos y práctica</small></span><span class="week-chevron" aria-hidden="true">⌄</span></summary><div class="week-content"><p>'+esc(desc)+'</p><div class="task"><strong>Ejercicio de introducción</strong><p>'+esc(exercise)+'</p></div><div class="week-actions"><a class="lesson-button" href="'+lessonUrl+'">Estudiar la lección <span aria-hidden="true">→</span></a><a class="lab-button" href="'+labUrl+'">Laboratorio práctico <span aria-hidden="true">↗</span></a></div></div></details>';
 }
 function render(){
