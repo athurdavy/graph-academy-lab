@@ -21,8 +21,9 @@ def test_todas_las_semanas_tienen_contenido_y_titulo(week):
 def test_lecciones_en_desarrollo_no_tienen_fences_escapados(week):
     content = (TEMARIO / f"semana-{week:02d}.md").read_text(encoding="utf-8")
     assert "\\`" not in content, f"Markdown mal escapado en semana {week:02d}"
-    starts = re.findall(r"(?m)^([~`]{3,})(?:[A-Za-z0-9_-]+)?\\s*$", content)
-    # La validación de fences debe comprobar también cierres.
+    starts = [line.strip() for line in content.splitlines()
+              if line.lstrip().startswith("~~~") or line.lstrip().startswith(chr(96) * 3)]
+    # En este campus cada bloque cercado necesita apertura y cierre.
     assert len(starts) % 2 == 0, f"Bloque de código sin cerrar en semana {week:02d}"
 
 
