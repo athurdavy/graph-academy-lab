@@ -233,6 +233,8 @@ La consulta recibe el valor por parámetro y distingue de manera explícita `Non
 
 **Ejercicio 7:** el [laboratorio de arquitectura](../laboratorios/04-arquitectura.md) permite comprobar reglas con un repositorio en memoria; el adaptador de Neo4j debe respetar el mismo contrato. Una prueba unitaria aislada no sustituye a la prueba de integración con Neo4j real.
 
+**Examen aplicado:** [Evaluación práctica de Neo4j (100 puntos)](../laboratorios/08-evaluacion-neo4j.md). Termina esta evaluación antes de pasar al bloque siguiente.
+
 ## 11. Evaluación de salida del bloque de Neo4j
 
 Sin mirar soluciones deberías poder:
