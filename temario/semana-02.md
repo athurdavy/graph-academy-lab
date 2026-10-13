@@ -337,6 +337,17 @@ print(nx.shortest_path_length(rutas, "A", "D", weight="coste"))
 
 **¿Y si no lo pasas?** La función considera todas las conexiones con el mismo coste de un salto y recupera la ruta de menos aristas.
 
+### Ejecutar los tres algoritmos en un único archivo
+
+Ya tienes un laboratorio autocontenido en [`recorridos_desde_cero.py`](../laboratorios/recorridos_desde_cero.py). Puedes ejecutar los ejemplos y sus pruebas desde la raíz del proyecto:
+
+~~~bash
+python laboratorios/recorridos_desde_cero.py
+python -m pytest laboratorios/tests/test_recorridos_desde_cero.py -q
+~~~
+
+El programa muestra las rutas de BFS y DFS, y compara la ruta con menos saltos frente a la de menor coste. Las pruebas comprueban esos resultados y el caso en el que no existe camino. **Estos tests no requieren ninguna base de datos ni conexión a Neo4j.**
+
 ## 7. O(V + E): qué significa esa expresión
 
 En muchos materiales técnicos aparece:
