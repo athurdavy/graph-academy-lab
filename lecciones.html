@@ -21,16 +21,37 @@ article h2{scroll-margin-top:25px}
 .study-footer{border-top:1px solid var(--line);margin-top:36px;padding-top:22px}
 .study-footer strong{color:var(--accent)}
 @media(max-width:570px){.toc-links{grid-template-columns:1fr}}
-.study-progress{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:#1b3147;border:1px solid #3e6173;border-radius:11px;margin:14px 0 26px;flex-wrap:wrap}.study-progress span{font-size:13px;color:#d4e7f2}.study-progress button{font:inherit;font-size:13px;cursor:pointer;padding:9px 13px;border-radius:8px;background:#71dbc3;color:#08212b;border:0;font-weight:750}.study-progress button:disabled{opacity:.5}.study-progress button:focus-visible{outline:3px solid #a2c8ff;outline-offset:2px}</style>
+.study-progress{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:#1b3147;border:1px solid #3e6173;border-radius:11px;margin:14px 0 26px;flex-wrap:wrap}.study-progress span{font-size:13px;color:#d4e7f2}.study-progress button{font:inherit;font-size:13px;cursor:pointer;padding:9px 13px;border-radius:8px;background:#71dbc3;color:#08212b;border:0;font-weight:750}.study-progress button:disabled{opacity:.5}.study-progress button:focus-visible{outline:3px solid #a2c8ff;outline-offset:2px}
+.back-home{color:#d5e7f8;text-decoration:none;font-weight:650;font-size:14px}
+.menu-disclosure>summary{display:none}
+.in-page-toc{padding:0!important;overflow:hidden}
+.toc-disclosure>summary,.study-footer>summary{list-style:none;cursor:pointer;padding:15px 18px;font-weight:750;color:#d9eaf8}
+.toc-disclosure>summary::-webkit-details-marker,.study-footer>summary::-webkit-details-marker{display:none}
+.toc-disclosure .toc-links{padding:0 17px 17px}
+.study-footer{border:1px solid var(--line);border-radius:11px;padding:0!important;overflow:hidden}
+.study-footer p{padding:0 18px}
+.study-footer p:last-child{padding-bottom:13px}
+.sidebar .path-entry{display:none}
+@media(max-width:820px){
+ .layout{gap:12px;padding-top:12px}
+ .sidebar{padding:0;max-height:none}
+ .menu-disclosure>summary{display:block;cursor:pointer;padding:13px 18px;color:#d9e9fa;font-weight:750;list-style:none}
+ .menu-disclosure>summary::-webkit-details-marker{display:none}
+ .menu-disclosure>summary:after{content:" ▾";color:var(--accent)}
+ .menu-disclosure>h2{display:none}
+ .menu-disclosure nav{padding:10px 16px 16px;max-height:50vh;overflow:auto}
+}
+</style>
 <script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 </head><body>
-<header><a class="brand" href="./">◈ Graph <span>Academy Lab</span></a><div class="actions"><a href="./">← Campus</a><a href="ruta.html">🧭 Ruta completa y orden</a><a href="laboratorios.html">🧪 Laboratorios guiados</a><a href="https://github.com/athurdavy/graph-academy-lab" target="_blank" rel="noopener">Código y datos ↗</a></div></header>
-<main class="layout"><aside class="sidebar"><h2>📚 Lecciones</h2><nav id="sidebar" aria-label="Índice de lecciones"></nav><p style="font-size:13px;color:var(--muted)">Las lecciones se leen aquí. Los bloques aún no desarrollados están señalados.</p></aside><div class="article"><div class="eyebrow" id="state">Formación gratuita · material público</div><div class="study-progress"><span id="checkpoint-text">Lee, practica y comprueba</span><button type="button" id="checkpoint-button" disabled>Marcar clase practicada</button></div><article id="content"><h1>Abriendo lección…</h1></article><nav id="prevnext" class="prevnext" aria-label="Navegación entre lecciones"></nav></div></main>
+<header><a class="brand" href="./">◈ Graph <span>Academy Lab</span></a><a href="./" class="back-home">← Volver al temario</a></header>
+<main class="layout"><aside class="sidebar"><details class="menu-disclosure" open><summary>Explorar clases y bloques</summary><h2>Temario</h2><nav id="sidebar" aria-label="Índice de lecciones"></nav></details></aside><div class="article"><div class="eyebrow" id="state">Formación gratuita · material público</div><div class="study-progress"><span id="checkpoint-text">Lee, practica y comprueba</span><button type="button" id="checkpoint-button" disabled>Marcar clase practicada</button></div><article id="content"><h1>Abriendo lección…</h1></article><nav id="prevnext" class="prevnext" aria-label="Navegación entre lecciones"></nav></div></main>
 <script>
 const lessons=[["01","Fundamentos de grafos"],["02","Recorridos"],["03","Grafo de propiedades y RDF"],["04","Neo4j AuraDB"],["05","Consultas Cypher"],["06","Importación y calidad"],["07","Driver Python"],["08","ArcadeDB: arquitectura"],["09","ArcadeDB: consultas"],["10","Comparativa de motores"],["11","Introducción a ontologías"],["12","SKOS y SPARQL"],["13","OWL e inferencia"],["14","SHACL"],["15","Gobernanza"],["16","Procedencia"],["17","Arquitectura"],["18","Knowledge graphs"],["19","Extracción"],["20","Embeddings"],["21","GraphRAG"],["22","Integración"],["23","Pruebas"],["24","Demostración"]];
 const params=new URLSearchParams(location.search);const week=/^\d{1,2}$/.test(params.get("semana")||"")?String(Number(params.get("semana"))).padStart(2,"0"):"01";
 const nav=document.getElementById("sidebar");
+if(window.matchMedia("(max-width:820px)").matches){document.querySelector(".menu-disclosure").removeAttribute("open");}
 const groups=[
 ["01–03 · Fundamentos",0,3],
 ["04–07 · Neo4j y Cypher",3,7],
@@ -41,14 +62,14 @@ const groups=[
 ["22–24 · Proyecto final",21,24]
 ];
 nav.innerHTML=
-'<a class="path-entry" href="empezar.html">▶ Empieza aquí · Guía de alumno</a>'+
-'<a class="path-entry" href="ruta.html">🧭 Ruta completa y requisitos</a>'+
-'<a class="path-entry" href="?tema=glosario">📖 Glosario de siglas y conceptos</a>'+
+
+
+
 groups.map(([title,start,end])=>'<details class="navgroup" '+(lessons.slice(start,end).some(([n])=>n===week)&&!params.get("tema")?'open':'')+'><summary>'+title+'</summary><div>'+lessons.slice(start,end).map(([n,t])=>'<a class="'+(n===week&&!params.get("tema")?'active':'')+'" href="?semana='+n+'">'+n+' · '+t+'</a>').join('')+'</div></details>').join('')+
-'<details class="navgroup" '+(params.get("tema")?'open':'')+'><summary>Especialización y recursos</summary><div><a href="laboratorios.html?lab=08">✅ Evaluación práctica Neo4j</a><a href="examenes.html">Exámenes Neo4j</a><a href="?tema=examen">Guía de exámenes</a><a href="?tema=master">Plan experto</a><a href="?tema=acreditacion">Evaluaciones</a><a href="?tema=protege">Protégé y OWL</a><a href="?tema=graphdb">GraphDB y RDF</a><a href="?tema=arquitectura">Arquitectura</a><a href="?tema=proyecto">Biblioteca ficticia</a></div></details>';
+'<details class="navgroup" '+(params.get("tema")?'open':'')+'><summary>Recursos complementarios</summary><div><a href="?tema=glosario">Glosario de conceptos</a><a href="laboratorios.html">Laboratorios</a><a href="?tema=protege">Taller Protégé</a><a href="?tema=graphdb">Taller GraphDB</a><a href="examenes.html">Preparación de exámenes</a><a href="ruta.html">Ruta avanzada</a></div></details>';
 const target=params.get("tema")==="glosario"?"temario/glosario-desde-cero.md":params.get("tema")==="examen"?"temario/preparacion-certificaciones.md":params.get("tema")==="acreditacion"?"temario/evaluacion-y-acreditacion.md":params.get("tema")==="protege"?"temario/especializacion-protege-owl.md":params.get("tema")==="graphdb"?"temario/especializacion-graphdb.md":params.get("tema")==="master"?"temario/master-profesional.md":params.get("tema")==="arquitectura"?"temario/arquitectura-bases-de-datos.md":params.get("tema")==="proyecto"?"temario/proyecto-biblioteca.md":"temario/semana-"+week+".md";
 const current=lessons.findIndex(([n])=>n===week);
-const recommendedLab=Number(week)<=3?"01":Number(week)<=7?"03":Number(week)<=10?"04":Number(week)<=14?"02":"04";document.getElementById("prevnext").insertAdjacentHTML("afterbegin",'<a href="laboratorios.html?lab='+recommendedLab+'">🧪 Laboratorio relacionado</a>');document.getElementById("prevnext").innerHTML+=(current>0?'<a href="?semana='+lessons[current-1][0]+'">← Semana '+lessons[current-1][0]+'</a>':'<span></span>')+(current>=0&&current<lessons.length-1?'<a href="?semana='+lessons[current+1][0]+'">Semana '+lessons[current+1][0]+' →</a>':'');
+const recommendedLab=Number(week)<=3?"01":Number(week)<=7?"03":Number(week)<=10?"04":Number(week)<=14?"02":"04";document.getElementById("prevnext").innerHTML+=(current>0?'<a href="?semana='+lessons[current-1][0]+'">← Semana '+lessons[current-1][0]+'</a>':'<span></span>')+(current>=0&&current<lessons.length-1?'<a href="?semana='+lessons[current+1][0]+'">Semana '+lessons[current+1][0]+' →</a>':'');
 function showMissing(){document.getElementById("state").textContent="Contenido pendiente";document.getElementById("content").innerHTML='<h1>Esta unidad está planificada</h1><p>La lección todavía no tiene el desarrollo completo. El índice de 24 semanas no equivale a 24 unidades terminadas. Puedes consultar las unidades disponibles desde el menú.</p><p><a href="?semana=01">Empezar por la semana 01 →</a></p>'}
 document.addEventListener("DOMContentLoaded",async()=>{
  try{
@@ -67,7 +88,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     const title=document.createElement("strong");title.textContent="En esta lección";toc.appendChild(title);
     const list=document.createElement("div");list.className="toc-links";
     headings.forEach((h,i)=>{h.id="apartado-"+(i+1);const a=document.createElement("a");a.href="#"+h.id;a.textContent=(i+1)+". "+h.textContent.replace(/^\\d+\\.\\s*/,"");list.appendChild(a)});
-    toc.appendChild(list);article.insertBefore(toc,article.firstChild.nextSibling);
+    const disclose=document.createElement("details");disclose.className="toc-disclosure";const summary=document.createElement("summary");summary.textContent="Contenido de esta clase · "+headings.length+" apartados";disclose.appendChild(summary);disclose.appendChild(list);toc.appendChild(disclose);article.insertBefore(toc,article.firstChild.nextSibling);
   }
   const codeBlocks=Array.from(article.querySelectorAll("pre"));
   codeBlocks.forEach(pre=>{const btn=document.createElement("button");btn.className="copy-code";btn.type="button";btn.textContent="Copiar código";btn.addEventListener("click",async()=>{const code=pre.querySelector("code")?.textContent||pre.textContent;try{await navigator.clipboard.writeText(code);btn.textContent="Copiado ✓"}catch(e){btn.textContent="Selecciona el código para copiar"} });pre.parentNode.insertBefore(btn,pre)});
@@ -76,7 +97,8 @@ document.addEventListener("DOMContentLoaded",async()=>{
     const paint=()=>{const done=localStorage.getItem(key)==="true";label.textContent=done?"Práctica marcada como realizada":"Marca esta clase solo después de ejecutar los ejemplos";button.textContent=done?"Desmarcar práctica":"Marcar clase practicada";button.disabled=false};
     button.addEventListener("click",()=>{const done=localStorage.getItem(key)==="true";localStorage.setItem(key,done?"false":"true");paint()});paint();
   }else document.querySelector(".study-progress").style.display="none";
-  const sourceLink=document.createElement("div");sourceLink.className="study-footer";sourceLink.innerHTML='<strong>Para aprenderlo de verdad</strong><p>Vuelve a explicar cada sección con tus palabras, ejecuta el ejemplo, cambia un dato y comprueba el resultado. Después resuelve los ejercicios sin mirar las soluciones.</p><a href="ruta.html">Volver a la ruta progresiva →</a>';article.appendChild(sourceLink);
+  if(!params.get("tema")){localStorage.setItem("gal-last-lesson",week);}
+  const sourceLink=document.createElement("details");sourceLink.className="study-footer";sourceLink.innerHTML='<summary>¿Cómo estudiar esta clase?</summary><p>Lee y ejecuta los ejemplos. Cambia un dato, predice el resultado y resuelve los ejercicios antes de mirar las soluciones.</p><p><a href="laboratorios.html?lab='+recommendedLab+'">Abrir práctica relacionada →</a></p>';article.appendChild(sourceLink);
   document.getElementById("state").textContent="Material de estudio · revisa el nivel y los ejercicios de cada unidad";document.title=(article.querySelector("h1")?.textContent||"Lección")+" | Graph Academy Lab";
  }catch(e){showMissing()}
 });
