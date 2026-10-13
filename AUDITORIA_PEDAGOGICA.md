@@ -54,3 +54,37 @@
 | Certificaciones | Banco inicial | Simulacros amplios y práctica oficial equivalente |
 
 **No declarar aprobado, experto ni titulado a alguien solo por recorrer los enlaces.** El programa es independiente y no concede acreditación oficial.
+## Revisión centrada en las primeras cuatro unidades — octubre de 2026
+
+**Perspectiva:** estudiante que sabe Python y SQL, no conoce bases de grafos ni ontologías. Esta matriz es una evaluación editorial **cualitativa**; no procede de un estudio empírico con alumnado ni de resultados reales de examen.
+
+| Unidad | Orden y prerrequisitos | Comprensibilidad | Reproducibilidad | Acción editorial |
+|---|---|---|---|---|
+| 01. Pensar en grafos | Adecuados como comienzo | Faltaba enseñar cómo decidir entidades, identidad y cardinalidad | Ejemplo NetworkX y tests disponibles | Se ha añadido modelado desde frases, comparación SQL y primera construcción explicada |
+| 02. Recorridos | Debe ir después del modelo | Siglas y diagramas ya explicados, pero faltaba contexto del caso | BFS, DFS y Dijkstra con Python y tests | Se añade un recorrido Autor→Libro→Tema con filtros semánticos |
+| 03. Propiedades y RDF | Es un **puente introductorio**, no un curso de ontologías | El vocabulario de RDF puede abrumar si se adelantan SKOS, OWL y SHACL | Laboratorio de RDFLib publicado, sin integración universal verificada | Se distingue explícitamente materia obligatoria de conceptos que se estudiarán en la semana 11 |
+| 04. Neo4j desde cero | A continuación del modelo y su comparación con RDF | Tiene un primer tutorial, necesita todavía comprobar conocimientos sin ayuda | Cypher y script en repositorio, ejecución remota no comprobada | Priorizar validación de los ejercicios y las respuestas esperadas |
+
+### Orden recomendado a un alumno real
+
+1. **Semana 01:** traducir preguntas de una biblioteca a nodos, relaciones y propiedades; explicar identidad.
+2. **Semana 02:** comprender primero *qué es un camino* y después BFS, DFS y Dijkstra; consultar los temas por los libros de una autora.
+3. **Semana 03:** comparar dos **representaciones** del mismo caso (propiedades y triples RDF). **No intentar aprender OWL ni SHACL en este punto**.
+4. **Semana 04:** llevar la biblioteca a una base Neo4j real; crear, consultar y verificar.
+5. **Semana 05:** profundizar en patrones Cypher, filtros y agregación.
+6. **Semana 06:** aprender idempotencia, carga CSV, constraints y operaciones de escritura.
+7. **Semana 07:** implementar un cliente Python, transacciones y un caso de uso reproducible.
+8. **Evaluación del bloque:** resolver una prueba técnica independiente y corregir errores antes de estudiar motores alternativos.
+9. **Ontologías, RDF avanzado y GraphDB:** partir de ese dominio conocido y ampliar su semántica.
+
+### Qué falta antes de llamar al bloque «validado»
+
+- Un entorno limpio que ejecute los scripts Python y las pruebas con versiones declaradas.
+- Una instancia Neo4j de laboratorio para ejecutar todas las consultas de las semanas 04–07 y verificar resultados; no se presume acceso a credenciales del alumnado.
+- Revisión de que **cada ejercicio** tiene datos de partida y una solución correcta bajo las condiciones indicadas.
+- Tests de transferencia: cambiar una relación o identificador y razonar sobre la respuesta.
+- Un pase de lectura por una persona sin conocimientos de grafos: registrar dudas reales en cada paso.
+- Comprobar accesibilidad y navegación en móvil y escritorio.
+
+**Criterio de cierre:** ninguna de las unidades se considera «100 % terminada» por tener varias páginas o referencias oficiales. Tiene que ser comprensible, ejecutable, transferible y verificable.
+
