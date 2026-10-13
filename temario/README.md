@@ -51,6 +51,6 @@ El curso distingue *grafo de propiedades*, *RDF*, *vocabulario controlado*, *ont
 - [Semana 01: fundamentos de grafos](semana-01.md)
 - [Semana 02: recorridos y algoritmos](semana-02.md)
 - [Semana 03: grafos de propiedades y RDF](semana-03.md)
-- [Caso práctico transversal](proyecto-catálogo.md)
+- [Caso práctico ficticio: biblioteca digital](proyecto-catálogo.md)
 
-Las semanas 4–24 están planificadas, **todavía no redactadas en profundidad**.
+Las semanas 1–7 tienen material desarrollado. Las semanas 8–24 siguen planificadas y pendientes de ampliación.
