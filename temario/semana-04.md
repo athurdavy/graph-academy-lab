@@ -4,6 +4,58 @@
 
 ![Modelo de biblioteca digital](../assets/biblioteca-grafo.svg)
 
+## Antes de empezar: qué estamos cambiando respecto a Python
+
+En las [semanas 1–3](semana-01.md) construimos el modelo, aprendimos a recorrerlo en NetworkX y distinguimos el grafo de propiedades de RDF. **Ahora no vamos a volver a diseñar todo desde cero:** implementaremos la misma biblioteca ficticia en una base de datos persistente.
+
+NetworkX es una librería para trabajar con grafos en memoria dentro de Python. Neo4j es un **sistema de gestión de bases de datos** que almacena nodos y relaciones, ejecuta Cypher y puede atender consultas de una aplicación a través de un protocolo de red.
+
+**Neo4j AuraDB** es una oferta gestionada. *Instancia* no equivale a *base de datos*: una instancia representa recursos y configuración de servicio. Los planes tienen características y límites distintos; no presupongas multi-base de datos en cualquier plan.
+
+### Objetivo mínimo de la primera sesión
+
+1. Abrir el entorno y ejecutar \`RETURN 1 AS prueba\`.
+2. Crear **un autor y un libro** con \`MERGE\`.
+3. Unirlos con una relación \`ESCRIBIO\`.
+4. Consultar el patrón con \`MATCH\`.
+5. Comprobar que ejecutar el mismo \`MERGE\` de nuevo no crea otro autor con la misma clave.
+
+Este ejercicio pequeño se hace **antes** de cargar todo el CSV; si no sabes recuperar estos dos nodos, el problema no se resuelve añadiendo más datos.
+
+### Cypher explicado paso a paso
+
+~~~cypher
+MERGE (a:Autor {id:'A-DEMO'})
+SET a.nombre = 'Autora de ejemplo'
+MERGE (l:Libro {isbn:'ISBN-DEMO'})
+SET l.titulo = 'Libro de ejemplo'
+MERGE (a)-[:ESCRIBIO]->(l);
+~~~
+
+- \`MERGE (a:Autor {id:'A-DEMO'})\` busca o crea un nodo con etiqueta \`Autor\` e \`id\` indicado.
+- \`SET a.nombre\` establece o actualiza una propiedad.
+- \`MERGE (l:Libro ...)\` identifica el libro con una clave estable.
+- \`MERGE (a)-[:ESCRIBIO]->(l)\` expresa una relación dirigida entre los dos nodos ya vinculados por las variables \`a\` y \`l\`.
+
+Consultamos:
+
+~~~cypher
+MATCH (a:Autor {id:'A-DEMO'})-[:ESCRIBIO]->(l:Libro)
+RETURN a.nombre AS autor, l.titulo AS titulo;
+~~~
+
+**Resultado esperado:** una fila: «Autora de ejemplo» y «Libro de ejemplo». \`MATCH\` busca; no crea. \`RETURN\` selecciona los datos mostrados.
+
+**Error deliberado:** sustituye \`->\` por \`<-\` en el patrón y observa si devuelve filas. Eso enseña que la dirección forma parte de la consulta.
+
+Para evitar mezclar ejemplos temporales con el dataset principal usa un entorno de laboratorio limpio o identificadores separados. No ejecutes eliminaciones indiscriminadas en una instancia compartida.
+
+### ¿En qué se diferencia de SQL?
+
+En SQL, una relación de autoría entre libros y autores podría representarse mediante una tabla \`autoria(autor_id, isbn)\`, con claves foráneas. En el modelo de propiedades, la autoría es una **arista dirigida de tipo ESCRIBIO**. En ambos casos hay reglas de identidad y consistencia que debes diseñar.
+
+**Próxima lección:** [Semana 05 — consultas Cypher](semana-05.md), donde iremos de un patrón fijo a filtros, agrupaciones y consultas multi-salto.
+
 ## Objetivos
 
 1. Crear una instancia de prueba AuraDB y acceder a la interfaz de consultas.
