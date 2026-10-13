@@ -26,37 +26,37 @@ Esta tabla presenta datos, pero si la autora escribe veinte libros, repetir su n
 
 ## 2. Anatomía de un grafo
 
-Un grafo dirigido es \(G=(V,E)\): \`V\` es el conjunto de vértices y \`E\` representa aristas ordenadas. La arista \`(A,B)\` no implica \`(B,A)\`.
+Un grafo dirigido es \(G=(V,E)\): `V` es el conjunto de vértices y `E` representa aristas ordenadas. La arista `(A,B)` no implica `(B,A)`.
 
 En nuestra biblioteca:
 
-- \`Autor:A-001\` es un **nodo** que representa a Marina.
-- \`Libro:ISBN-001\` representa un libro.
-- \`(Autor:A-001)-[:ESCRIBIO]->(Libro:ISBN-001)\` es una **relación dirigida y tipada**.
-- \`(Libro:ISBN-001)-[:TRATA_SOBRE]->(Tema:GRAFOS)\` es otra relación, con un significado diferente.
+- `Autor:A-001` es un **nodo** que representa a Marina.
+- `Libro:ISBN-001` representa un libro.
+- `(Autor:A-001)-[:ESCRIBIO]->(Libro:ISBN-001)` es una **relación dirigida y tipada**.
+- `(Libro:ISBN-001)-[:TRATA_SOBRE]->(Tema:GRAFOS)` es otra relación, con un significado diferente.
 
 ¿Por qué las relaciones llevan nombre? Porque una línea entre Autor y Libro no nos dice si el autor escribió, tradujo, ilustró o recomendó el libro. Sin tipos, el grafo resulta ambiguo.
 
 ### Propiedades, etiquetas e identificadores
 
-- **Etiqueta** \`Libro\`: agrupa nodos del mismo tipo de entidad en un grafo de propiedades.
-- **Propiedad** \`titulo\`: atributo del libro.
-- **Identificador** \`ISBN-001\`: clave ficticia para recuperar un ejemplar de datos de forma consistente.
-- **Tipo de relación** \`ESCRIBIO\`: explica el vínculo.
+- **Etiqueta** `Libro`: agrupa nodos del mismo tipo de entidad en un grafo de propiedades.
+- **Propiedad** `titulo`: atributo del libro.
+- **Identificador** `ISBN-001`: clave ficticia para recuperar un ejemplar de datos de forma consistente.
+- **Tipo de relación** `ESCRIBIO`: explica el vínculo.
 
 El ISBN del laboratorio es inventado y no es un ISBN comercial válido. No utilices el título como única clave: pueden existir libros con el mismo título o ediciones diferentes.
 
 ## 3. Dirección y cardinalidad: dos decisiones distintas
 
-\`Autor -[:ESCRIBIO]-> Libro\` apunta del autor al libro. Aunque puedas consultar esa arista en sentido contrario, su **significado** sigue siendo «autor escribió libro».
+`Autor -[:ESCRIBIO]-> Libro` apunta del autor al libro. Aunque puedas consultar esa arista en sentido contrario, su **significado** sigue siendo «autor escribió libro».
 
-La *cardinalidad* contesta otra pregunta: ¿un libro puede tener varios autores? Sí, en nuestro modelo puede. No guardaremos un único \`autor_id\` obligatorio dentro de Libro como regla universal: permitiremos varias relaciones \`ESCRIBIO\`.
+La *cardinalidad* contesta otra pregunta: ¿un libro puede tener varios autores? Sí, en nuestro modelo puede. No guardaremos un único `autor_id` obligatorio dentro de Libro como regla universal: permitiremos varias relaciones `ESCRIBIO`.
 
 Otros ejemplos:
 
-- Un \`Libro\` puede tener varios \`Tema\`.
-- Un \`Lector\` puede haber leído varios \`Libro\`.
-- Un mismo \`Libro\` puede ser leído por varios lectores.
+- Un `Libro` puede tener varios `Tema`.
+- Un `Lector` puede haber leído varios `Libro`.
+- Un mismo `Libro` puede ser leído por varios lectores.
 
 No transformes estas afirmaciones en restricciones arbitrarias de unicidad. Son reglas de negocio que deben comprobarse con el caso real.
 
@@ -64,7 +64,7 @@ No transformes estas afirmaciones en restricciones arbitrarias de unicidad. Son 
 
 Hasta ahora hablamos de entidades del catálogo. **Todavía no hemos definido una ontología OWL**.
 
-Si utilizamos \`:Libro\` como etiqueta Neo4j, eso no significa automáticamente que hayamos declarado una clase \`owl:Class\`. Tampoco garantiza inferencia, consistencia lógica o interoperabilidad RDF.
+Si utilizamos `:Libro` como etiqueta Neo4j, eso no significa automáticamente que hayamos declarado una clase `owl:Class`. Tampoco garantiza inferencia, consistencia lógica o interoperabilidad RDF.
 
 Distinguirás estas capas a lo largo del curso:
 
@@ -87,7 +87,7 @@ python -m pip install -r laboratorios/requirements.txt
 python laboratorios/biblioteca.py
 ~~~
 
-El programa usa \`nx.MultiDiGraph\`: un multigrafo dirigido que permite más de una relación entre los mismos nodos.
+El programa usa `nx.MultiDiGraph`: un multigrafo dirigido que permite más de una relación entre los mismos nodos.
 
 **Salida esperada:**
 
@@ -101,9 +101,9 @@ Libros sobre grafos: ['libro:ISBN-001']
 
 ### Entender una consulta sobre la estructura
 
-La función \`libros_de_autor(grafo, "A-001")\` parte del autor y examina sus relaciones **salientes**. Filtra \`tipo == "ESCRIBIO"\`, porque podríamos tener otras relaciones salientes, por ejemplo «RECOMENDO».
+La función `libros_de_autor(grafo, "A-001")` parte del autor y examina sus relaciones **salientes**. Filtra `tipo == "ESCRIBIO"`, porque podríamos tener otras relaciones salientes, por ejemplo «RECOMENDO».
 
-La función \`libros_sobre_tema(grafo,"GRAFOS")\` parte del tema y examina las relaciones **entrantes** \`TRATA_SOBRE\`. La dirección de la relación importa incluso si empezamos la búsqueda por el destino.
+La función `libros_sobre_tema(grafo,"GRAFOS")` parte del tema y examina las relaciones **entrantes** `TRATA_SOBRE`. La dirección de la relación importa incluso si empezamos la búsqueda por el destino.
 
 ## 6. Pruebas automáticas y propósito de cada una
 
@@ -116,26 +116,26 @@ Los tests comprueban, entre otras cosas:
 - Número conocido de nodos y relaciones.
 - Qué libros recupera una consulta por autor.
 - Qué se obtiene al consultar un identificador inexistente.
-- Que \`Autor → Libro\` no equivale a \`Libro → Autor\`.
+- Que `Autor → Libro` no equivale a `Libro → Autor`.
 - Que las relaciones llevan un tipo.
 
 **Por qué comprobar dirección:** una consulta mal orientada puede devolver un resultado vacío sin producir un error técnico. Ese es un bug semántico silencioso.
 
 ## 7. Ejercicios para resolver sin copiar
 
-**A. Comprensión.** Explica por qué \`ESCRIBIO\` y \`LEYO\` no pueden fusionarse en una relación llamada \`CONECTADO_CON\` sin perder significado.
+**A. Comprensión.** Explica por qué `ESCRIBIO` y `LEYO` no pueden fusionarse en una relación llamada `CONECTADO_CON` sin perder significado.
 
-**B. Modelado.** Un libro puede estar coescrito. Añade \`Autor:A-002\` y una segunda relación hacia \`Libro:ISBN-001\`. Dibuja el resultado.
+**B. Modelado.** Un libro puede estar coescrito. Añade `Autor:A-002` y una segunda relación hacia `Libro:ISBN-001`. Dibuja el resultado.
 
-**C. Código.** Implementa \`libros_leidos_por(grafo, lector_id)\`, filtrando las aristas salientes \`LEYO\`. Comprueba que \`L-001\` ha leído \`ISBN-001\`.
+**C. Código.** Implementa `libros_leidos_por(grafo, lector_id)`, filtrando las aristas salientes `LEYO`. Comprueba que `L-001` ha leído `ISBN-001`.
 
-**D. Diseño.** El lector puede leer el mismo libro en diferentes fechas. ¿Guardarías varias aristas, propiedades en la relación o una entidad \`Lectura\`? Argumenta cómo recuperarías el historial.
+**D. Diseño.** El lector puede leer el mismo libro en diferentes fechas. ¿Guardarías varias aristas, propiedades en la relación o una entidad `Lectura`? Argumenta cómo recuperarías el historial.
 
-**E. Diagnóstico.** Invierte la dirección de \`TRATA_SOBRE\` sin cambiar la consulta. Explica por qué el resultado queda vacío.
+**E. Diagnóstico.** Invierte la dirección de `TRATA_SOBRE` sin cambiar la consulta. Explica por qué el resultado queda vacío.
 
 ## 8. Soluciones razonadas
 
-**A.** Al usar \`CONECTADO_CON\` ya no puedes distinguir autoría de lectura sin información adicional. La consulta «libros escritos por Marina» podría devolver libros que solo leyó.
+**A.** Al usar `CONECTADO_CON` ya no puedes distinguir autoría de lectura sin información adicional. La consulta «libros escritos por Marina» podría devolver libros que solo leyó.
 
 **C.** Solución de referencia:
 
@@ -151,7 +151,7 @@ def libros_leidos_por(grafo, lector_id):
     })
 ~~~
 
-**D.** Si necesitas fechas, valoraciones y múltiples lecturas, una entidad intermedia \`Lectura\` con identificador y metadatos puede facilitar auditoría. Una arista con propiedades sirve para casos más simples. No hay una decisión universal.
+**D.** Si necesitas fechas, valoraciones y múltiples lecturas, una entidad intermedia `Lectura` con identificador y metadatos puede facilitar auditoría. Una arista con propiedades sirve para casos más simples. No hay una decisión universal.
 
 ## 9. ¿Estás preparado para la semana 02?
 
