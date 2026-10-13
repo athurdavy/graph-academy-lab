@@ -1,0 +1,14 @@
+@prefix ex: <https://example.org/temas/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+ex:esquema a skos:ConceptScheme ;
+  skos:prefLabel "Temas de biblioteca"@es .
+ex:ciencia a skos:Concept ;
+  skos:inScheme ex:esquema ;
+  skos:prefLabel "Ciencia"@es .
+ex:grafos a skos:Concept ;
+  skos:inScheme ex:esquema ;
+  skos:prefLabel "Teoría de grafos"@es ;
+  skos:altLabel "Grafos"@es ;
+  skos:broader ex:ciencia ;
+  skos:definition "Estudio de estructuras formadas por vértices y aristas."@es .
