@@ -7,10 +7,10 @@ En un **grafo de propiedades**, nodos y relaciones pueden llevar propiedades. En
 ### Ejemplo de grafo de propiedades en Cypher
 
 ```cypher
-MERGE (c:Concepto {id: 'cliente'})
-SET c.nombre = 'Cliente'
-MERGE (t:Termino {id: 'customer'})
-SET t.nombre = 'Customer'
+MERGE (c:Concepto {id: 'libro'})
+SET c.nombre = 'Libro'
+MERGE (t:Termino {id: 'book'})
+SET t.nombre = 'Book'
 MERGE (t)-[:DENOMINA]->(c)
 ```
 
@@ -21,9 +21,9 @@ MERGE (t)-[:DENOMINA]->(c)
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 
-ex:cliente a skos:Concept ;
-    skos:prefLabel "Cliente"@es ;
-    skos:altLabel "Customer"@en ;
+ex:libro a skos:Concept ;
+    skos:prefLabel "Libro"@es ;
+    skos:altLabel "Book"@en ;
     skos:definition "Entidad que adquiere bienes o servicios."@es .
 ```
 
