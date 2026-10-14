@@ -76,6 +76,54 @@ print(response.json())
 
 No guardes contraseñas en el repositorio. Para producción usa transporte protegido y la política de autenticación apropiada.
 
+## 2.1. Practicar HTTP sin necesitar un servidor
+
+**Antes de conectar ArcadeDB**, tenemos un cliente Python real diseñado para recibir una sesión HTTP como dependencia. Esto permite sustituir la sesión por un objeto simulado y comprobar **qué petición intentaría enviar** y **cómo manejaría las respuestas**.
+
+Archivos nuevos:
+
+- [Cliente HTTP con validación](../laboratorios/arcadedb_http.py).
+- [Pruebas de respuesta y fallos](../laboratorios/tests/test_arcadedb_http.py).
+
+Desde la raíz del proyecto:
+
+```bash
+python -m pip install -r laboratorios/requirements.txt
+python -m pytest laboratorios/tests/test_arcadedb_http.py -q
+```
+
+### Cómo funciona la separación
+
+La función `consultar_libros(session, url, database, username, password)` no crea la sesión dentro de ella: **la recibe como argumento**. Eso se llama *inyección de dependencias*.
+
+En un programa real le pasas una sesión de `requests`. En un test pasas un `Mock`, un objeto simulado que responde como hayas configurado.
+
+```python
+from unittest.mock import Mock
+from laboratorios.arcadedb_http import consultar_libros
+
+sesion = Mock()
+sesion.post.return_value.json.return_value = {
+    "result": [{"isbn": "ISBN-001", "titulo": "El mapa de los grafos"}]
+}
+libros = consultar_libros(
+    sesion, "http://localhost:2480", "biblioteca", "usuario", "clave-ficticia"
+)
+print(libros)
+```
+
+**Esperado:** una lista con el libro ficticio. **No se envía ninguna petición de red**, porque `sesion` es un doble de prueba.
+
+### El caso que debes saber diagnosticar
+
+Si ArcadeDB devuelve un JSON inesperado, la función `extraer_libros_json` genera `ValueError` en lugar de devolver `[]`. Si se produce una excepción HTTP o un timeout, **no la captura como si fueran datos ausentes**.
+
+Eso es más importante que memorizar los códigos: aprende a diferenciar ausencia legítima, respuesta de formato desconocido, error del servidor y problema de conexión.
+
+**Limitación de la práctica:** los tests no confirman que tu versión de ArcadeDB devuelva siempre la estructura JSON esperada. Para eso necesitarás un test de integración con un servidor concreto y revisar su documentación.
+
+---
+
 ## 3. Driver oficial
 
 ArcadeDB documenta `arcadedb-driver` para Python, generado desde OpenAPI. Si lo usas, fija una versión, documenta la API y comprueba cambios del cliente. Los ejemplos de los tutoriales pueden reflejar una versión concreta del servidor.
