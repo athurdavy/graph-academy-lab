@@ -39,6 +39,56 @@ No confundas este ejemplo aritmético con una medición de Neo4j o ArcadeDB: **s
 
 ---
 
+## Práctica previa: comprueba equivalencia antes de medir
+
+Un error común es comparar la velocidad de dos consultas que **no responden exactamente lo mismo**. En este laboratorio podrás examinarlo con datos ficticios, sin motores instalados.
+
+Ejecuta:
+
+```bash
+python laboratorios/comparar_motores.py
+python -m pytest laboratorios/tests/test_comparar_motores.py -q
+```
+
+El programa muestra un ejemplo donde dos motores simulan devolver el mismo ISBN y título. **No ejecuta Neo4j ni ArcadeDB.**
+
+### Cómo se comprueban resultados
+
+```python
+from laboratorios.comparar_motores import comparar_resultados
+
+filas_neo4j = [
+    {"isbn": "ISBN-001", "titulo": "El mapa de los grafos"},
+]
+filas_arcadedb = [
+    {"isbn": "ISBN-001", "titulo": "El mapa de los grafos"},
+]
+
+print(comparar_resultados(filas_neo4j, filas_arcadedb))
+```
+
+**Esperado:** `True`. La función compara los pares ISBN-título y utiliza contadores para **no ocultar duplicados**. Si una consulta devuelve un libro dos veces y otra una vez, el resultado pasa a ser `False`.
+
+### Cómo se calculan métricas sin inventar benchmarks
+
+```python
+from laboratorios.comparar_motores import resumen_tiempos
+
+print(resumen_tiempos([7, 9, 8, 10, 41]))
+```
+
+**Esperado:** `{'n': 5, 'mediana_ms': 9, 'p95_ms': 41}`.
+
+- `n` es el número de mediciones.
+- **Mediana:** valor central de los tiempos ordenados.
+- **p95:** percentil 95 según el método de rango más próximo, declarado en la implementación.
+
+Los números **son inventados para aprender estadística**, no son resultados observados de motores de bases de datos. Una comparativa profesional también necesita dataset, versiones, hardware, red, índices y varias ejecuciones reales.
+
+**Prueba negativa obligatoria:** añade un ISBN repetido a solo uno de los conjuntos. Aunque los títulos parezcan iguales, la comparación debe devolver `False`.
+
+---
+
 ## 1. Define un benchmark justo
 
 Con el mismo conjunto **ficticio** de libros, autores y temas ejecuta:
