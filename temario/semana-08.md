@@ -118,7 +118,7 @@ MATCH (l:Libro {isbn: 'ISBN-001'})
 RETURN l.titulo;
 ```
 
-Recuerda la sintaxis: `::` introduce una etiqueta en el patrón de nodo Cypher, mientras que en ArcadeDB aquí se ha indicado el **tipo de registro** después de `FROM`. Que ambos modelos describan entidades y relaciones **no hace intercambiable su sintaxis**.
+Recuerda la sintaxis: `:Libro` introduce una etiqueta en el patrón de nodo Cypher, mientras que en ArcadeDB aquí se ha indicado el **tipo de registro** después de `FROM`. Que ambos modelos describan entidades y relaciones **no hace intercambiable su sintaxis**.
 
 ## 8. ¿Cómo comparar motores sin hacer publicidad?
 
