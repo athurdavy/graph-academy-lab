@@ -4,53 +4,33 @@
 
 **Unidad 1 de 42 · Bloque: fundamentos.** Tiempo orientativo: 8–12 horas. **Antes de comenzar:** saber ejecutar Python y comprender qué es una tabla SQL. **Después:** [Semana 02 — recorridos](semana-02.md).
 
-## Antes de empezar: por qué aparece el símbolo de dos puntos
+## Antes de empezar: la primera clase NO empieza por código
 
-**No tienes que saber Neo4j ni RDF para comenzar.** Vamos a traducir las expresiones que encontrarás, una a una.
+Si sabes Python, pero nunca has visto un grafo, **esta lección está pensada para ti**. Hoy no necesitas instalar Neo4j, conocer OWL ni aprender siglas. Vamos a empezar con una única frase de nuestra biblioteca ficticia:
 
-Primero piensa en una biblioteca: Marina Soler escribió un libro. Dibujamos dos **nodos** (Marina y el libro) y una **relación** dirigida de Marina hacia el libro. En este momento no necesitamos escribir ningún código.
+> **Marina Soler escribió un libro llamado El mapa de los grafos.**
 
-**Una etiqueta no es una persona ni un libro concreto.** «Libro» indica qué tipo de entidad representamos. «ISBN-001» identifica un libro específico. «El mapa de los grafos» es su título, no su identificador.
+Imagina que estás apuntando esa información en un papel. Tienes **dos cosas**: una persona y un libro. Y sabes **algo que las une**: la persona escribió ese libro.
 
-### Los dos puntos no significan siempre lo mismo
+**Primer concepto, sin símbolos:** a cada cosa que quieres representar la llamaremos **nodo**. A cada conexión con significado entre dos nodos la llamaremos **relación** (también puedes oír la palabra *arista*).
 
-| Escritura | Lenguaje o contexto | Qué significa |
-|---|---|---|
-| `:Libro` | Cypher (Neo4j) | Etiqueta que clasifica un nodo como Libro |
-| `(l:Libro)` | Cypher (Neo4j) | Patrón de nodo con etiqueta Libro; `l` es una variable temporal |
-| `{titulo: "El mapa"}` | Cypher (Neo4j) | Propiedad llamada titulo cuyo valor es El mapa |
-| `"autor:A-001"` | Python en nuestro laboratorio | **Una cadena de texto elegida por nosotros** como identificador; los dos puntos no son una instrucción de Python |
-| `ex:Libro` | Turtle/RDF, más adelante | Un identificador abreviado con el prefijo `ex:`; **no es una etiqueta de Neo4j** |
+No hay más conceptos que necesites ahora mismo. No son nada sobrenatural: solo una forma de organizar información conectada.
 
-El error sería enseñar que los dos puntos tienen un significado universal. **Su función depende del lenguaje y de dónde aparezcan.**
-
-### Aprende a leer el patrón, sin memorizarlo
-
-Esta es una representación de un nodo en Cypher. **Todavía no estamos creando nada**:
-
-~~~cypher
-(l:Libro {isbn: "ISBN-001", titulo: "El mapa"})
+~~~text
+MARINA SOLER  ──── escribió ────▶  EL MAPA DE LOS GRAFOS
+  persona                                 libro
 ~~~
 
-- Los **paréntesis** indican un nodo en el patrón de Cypher.
-- `l` es el nombre temporal con el que nos referimos a ese nodo **dentro de la consulta**.
-- `:Libro` dice que es un nodo con la **etiqueta** Libro.
-- Las **llaves** contienen sus propiedades.
-- `isbn` es el nombre de una propiedad y `"ISBN-001"` es su valor de texto.
-- `titulo` es otra propiedad y `"El mapa"` es su valor.
+La flecha significa que la frase se lee desde Marina hasta el libro. **No** significa que el libro escribió a Marina.
 
-**Traducción al castellano:** «Un nodo al que llamaré l, de la categoría Libro, identificado con ISBN-001 y cuyo título es El mapa».
+### Comprueba que lo has entendido antes de avanzar
 
-¿Para qué existe la variable `l`? Para poder pedir luego su título o relacionarlo con otro nodo. **No es un identificador permanente** del libro.
+1. ¿Cuántas cosas aparecen en el dibujo? **Dos**: una persona y un libro.
+2. ¿Cuántas conexiones? **Una**: escribió.
+3. ¿El título del libro es una tercera persona? **No**. Es información sobre el libro.
+4. Si Marina escribió otro libro, ¿necesitas duplicar a Marina? **No**. Dibujas otro libro y otra conexión.
 
-### Cuatro preguntas para saber si has entendido
-
-1. ¿Pueden cien libros diferentes llevar la etiqueta `:Libro`? **Sí**, todos comparten la categoría.
-2. ¿Es `titulo` otra entidad? **No en este modelo inicial**: es un dato del Libro.
-3. ¿La cadena Python `"autor:A-001"` crea automáticamente un nodo Autor? **No**: es texto; NetworkX no interpreta el prefijo como una etiqueta.
-4. ¿`(l:Libro)` crea un libro por sí solo? **No**: es un patrón que necesita una instrucción como `CREATE` o `MATCH`, que veremos más adelante.
-
-**Regla de esta academia:** ningún signo nuevo se da por sabido. Primero conocerás su significado y verás cómo cambia el resultado al utilizarlo; después escribirás instrucciones completas.
+**Qué vamos a aprender en esta unidad, en ese orden:** primero distinguir cosas y conexiones; después dibujar una pequeña biblioteca; luego decidir cómo identificar cada cosa; finalmente pasar el dibujo a Python. **Al final** encontrarás los símbolos de Cypher como `:Libro`, que *no son necesarios* para aprender qué es un grafo.
 
 ---
 
@@ -118,17 +98,17 @@ Para entender por qué un grafo no es una tecnología misteriosa, compara modelo
 
 | Base relacional | Grafo de propiedades |
 |---|---|
-| Fila en tabla \`autores\` | Nodo \`:Autor\` |
-| Fila en tabla \`libros\` | Nodo \`:Libro\` |
-| Tabla intermedia \`autorias\` con dos claves foráneas | Relación \`ESCRIBIO\` |
-| Columna \`titulo\` | Propiedad \`titulo\` de Libro |
-| Clave primaria \`autor_id\` | Propiedad identificadora \`id\`, protegida después mediante una restricción |
+| Fila en tabla `autores` | Nodo `:Autor` |
+| Fila en tabla `libros` | Nodo `:Libro` |
+| Tabla intermedia `autorias` con dos claves foráneas | Relación `ESCRIBIO` |
+| Columna `titulo` | Propiedad `titulo` de Libro |
+| Clave primaria `autor_id` | Propiedad identificadora `id`, protegida después mediante una restricción |
 
 **No son equivalencias perfectas:** SQL y Neo4j tienen reglas de almacenamiento y consulta diferentes. Pero reconocer la correspondencia te permite partir de algo que ya conoces.
 
 ### Pregunta de control
 
-Un libro tiene un ISBN y un título. ¿Crearías tres nodos (Libro, ISBN, Título) o un nodo Libro con propiedades? Para **este caso básico**, usa un nodo Libro con \`isbn\` y \`titulo\`: ambos describen la entidad. Más adelante podrías convertir algún dato en entidad independiente **si necesitas relacionarlo con otras entidades o gestionar su identidad**.
+Un libro tiene un ISBN y un título. ¿Crearías tres nodos (Libro, ISBN, Título) o un nodo Libro con propiedades? Para **este caso básico**, usa un nodo Libro con `isbn` y `titulo`: ambos describen la entidad. Más adelante podrías convertir algún dato en entidad independiente **si necesitas relacionarlo con otras entidades o gestionar su identidad**.
 
 ## 1.2. Identidad, nombre y duplicados: un error que cuesta dinero
 
@@ -138,12 +118,12 @@ Imagina dos obras tituladas *Introducción a los grafos*. Tener el mismo título
 
 Por eso el laboratorio usa identificadores como:
 
-- \`autor:A-001\`: la entidad autora.
-- \`libro:ISBN-001\`: la entidad libro.
-- \`tema:GRAFOS\`: el concepto de clasificación.
-- \`lector:L-001\`: la entidad lectora.
+- `autor:A-001`: la entidad autora.
+- `libro:ISBN-001`: la entidad libro.
+- `tema:GRAFOS`: el concepto de clasificación.
+- `lector:L-001`: la entidad lectora.
 
-Son **identificadores inventados para clase**. \`ISBN-001\` no es un ISBN comercial validado: es un código didáctico para ver cómo funciona una clave.
+Son **identificadores inventados para clase**. `ISBN-001` no es un ISBN comercial validado: es un código didáctico para ver cómo funciona una clave.
 
 ### Qué ocurre si eliges una clave equivocada
 
@@ -200,15 +180,65 @@ Relaciones: 1
 
 ### Qué significa cada instrucción
 
-1. \`import networkx as nx\` carga la biblioteca de Python.
-2. \`MultiDiGraph()\` crea un **multigrafo dirigido** en memoria: las flechas tienen dirección y puede haber más de una relación entre dos nodos.
-3. \`add_node\` añade una entidad y le asigna datos.
-4. \`add_edge\` crea una relación **desde el primer identificador al segundo**.
-5. \`has_edge\` comprueba si existe una conexión en el sentido indicado.
+1. `import networkx as nx` carga la biblioteca de Python.
+2. `MultiDiGraph()` crea un **multigrafo dirigido** en memoria: las flechas tienen dirección y puede haber más de una relación entre dos nodos.
+3. `add_node` añade una entidad y le asigna datos.
+4. `add_edge` crea una relación **desde el primer identificador al segundo**.
+5. `has_edge` comprueba si existe una conexión en el sentido indicado.
 
-**Experimento obligatorio:** cambia los dos identificadores de orden en \`has_edge\`. ¿Qué resultado esperas? Predícelo antes de ejecutarlo.
+**Experimento obligatorio:** cambia los dos identificadores de orden en `has_edge`. ¿Qué resultado esperas? Predícelo antes de ejecutarlo.
 
-**Límite del ejemplo:** NetworkX representa aquí nuestras relaciones con el atributo \`tipo\`; Neo4j almacena además **tipos de relación como parte de su modelo de datos**. Son conceptos parecidos para aprender, pero no idénticos internamente.
+**Límite del ejemplo:** NetworkX representa aquí nuestras relaciones con el atributo `tipo`; Neo4j almacena además **tipos de relación como parte de su modelo de datos**. Son conceptos parecidos para aprender, pero no idénticos internamente.
+
+---
+
+## 1.5. Ahora sí: cómo interpretar los dos puntos en diferentes lenguajes
+
+**Has aprendido primero qué es un nodo y cómo se representa un grafo.** Ahora ya tiene sentido ver cómo escribirlo en herramientas distintas. No memorices los signos: compáralos con el dibujo de la biblioteca.
+
+Primero piensa en una biblioteca: Marina Soler escribió un libro. Dibujamos dos **nodos** (Marina y el libro) y una **relación** dirigida de Marina hacia el libro. En este momento no necesitamos escribir ningún código.
+
+**Una etiqueta no es una persona ni un libro concreto.** «Libro» indica qué tipo de entidad representamos. «ISBN-001» identifica un libro específico. «El mapa de los grafos» es su título, no su identificador.
+
+### Los dos puntos no significan siempre lo mismo
+
+| Escritura | Lenguaje o contexto | Qué significa |
+|---|---|---|
+| `:Libro` | Cypher (Neo4j) | Etiqueta que clasifica un nodo como Libro |
+| `(l:Libro)` | Cypher (Neo4j) | Patrón de nodo con etiqueta Libro; `l` es una variable temporal |
+| `{titulo: "El mapa"}` | Cypher (Neo4j) | Propiedad llamada titulo cuyo valor es El mapa |
+| `"autor:A-001"` | Python en nuestro laboratorio | **Una cadena de texto elegida por nosotros** como identificador; los dos puntos no son una instrucción de Python |
+| `ex:Libro` | Turtle/RDF, más adelante | Un identificador abreviado con el prefijo `ex:`; **no es una etiqueta de Neo4j** |
+
+El error sería enseñar que los dos puntos tienen un significado universal. **Su función depende del lenguaje y de dónde aparezcan.**
+
+### Aprende a leer el patrón, sin memorizarlo
+
+Esta es una representación de un nodo en Cypher. **Todavía no estamos creando nada**:
+
+~~~cypher
+(l:Libro {isbn: "ISBN-001", titulo: "El mapa"})
+~~~
+
+- Los **paréntesis** indican un nodo en el patrón de Cypher.
+- `l` es el nombre temporal con el que nos referimos a ese nodo **dentro de la consulta**.
+- `:Libro` dice que es un nodo con la **etiqueta** Libro.
+- Las **llaves** contienen sus propiedades.
+- `isbn` es el nombre de una propiedad y `"ISBN-001"` es su valor de texto.
+- `titulo` es otra propiedad y `"El mapa"` es su valor.
+
+**Traducción al castellano:** «Un nodo al que llamaré l, de la categoría Libro, identificado con ISBN-001 y cuyo título es El mapa».
+
+¿Para qué existe la variable `l`? Para poder pedir luego su título o relacionarlo con otro nodo. **No es un identificador permanente** del libro.
+
+### Cuatro preguntas para saber si has entendido
+
+1. ¿Pueden cien libros diferentes llevar la etiqueta `:Libro`? **Sí**, todos comparten la categoría.
+2. ¿Es `titulo` otra entidad? **No en este modelo inicial**: es un dato del Libro.
+3. ¿La cadena Python `"autor:A-001"` crea automáticamente un nodo Autor? **No**: es texto; NetworkX no interpreta el prefijo como una etiqueta.
+4. ¿`(l:Libro)` crea un libro por sí solo? **No**: es un patrón que necesita una instrucción como `CREATE` o `MATCH`, que veremos más adelante.
+
+**Regla de esta academia:** ningún signo nuevo se da por sabido. Primero conocerás su significado y verás cómo cambia el resultado al utilizarlo; después escribirás instrucciones completas.
 
 ---
 
