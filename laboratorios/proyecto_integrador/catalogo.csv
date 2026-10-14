@@ -1,0 +1,4 @@
+isbn,titulo,anio,autor_id,autor_nombre,tema_codigo
+ISBN-001,El mapa de los grafos,2022,A-001,Marina Soler,GRAFOS
+ISBN-002,Rutas de conocimiento,2024,A-001,Marina Soler,GRAFOS
+ISBN-003,Historias del océano,2019,A-002,Diego Ríos,NATURALEZA
