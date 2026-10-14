@@ -6,7 +6,7 @@
 
 ## 1. El problema: tener RDF no significa tener buenos datos
 
-Nuestra biblioteca ficticia guarda dos libros. El primero tiene ISBN y título; el segundo solo tiene ISBN porque alguien olvidó introducir el título.
+Nuestra biblioteca ficticia guarda dos libros y, **en los datos de partida, ambos tienen ISBN y título**. Para aprender a validar introduciremos un error deliberado: eliminaremos el título de uno de ellos **en una copia en memoria**, sin modificar el fichero original.
 
 RDF permite representar **lo que sabemos**, sin exigir automáticamente que cada recurso tenga todos los campos de una ficha administrativa. OWL añade significado lógico, pero no funciona como «el esquema obligatorio de un formulario».
 
