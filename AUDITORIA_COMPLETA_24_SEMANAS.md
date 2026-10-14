@@ -42,11 +42,11 @@
 | 17 | Arquitectura, repositorios, fuente de verdad, ORM/OGM | Construir API integrada, probar sincronización SQL/Neo4j y observabilidad | Intermedia; integración pendiente |
 | 18 | KG, afirmaciones con fuente, identidad y NetworkX; reescrita | Tests del laboratorio y reconciliación sobre registros nuevos | Desarrollo sustancial nuevo; integración pendiente |
 | 19 | NLP, NER, enlace de entidades, precisión y recall; reescrita | Ensayar modelos y datasets reales, anotar resultados y errores | Desarrollo sustancial nuevo; evaluación de modelo pendiente |
-| 20 | Conceptos de embeddings y recuperación | Modelo ejecutable y tests de recuperación, comparación con búsqueda léxica | **Introductoria, no cerrada** |
-| 21 | GraphRAG y trazabilidad | Flujo completo con evaluación de citas, no-respuestas y alucinaciones | **Introductoria, no cerrada** |
-| 22 | Integración API e importaciones | Aplicación completa ejecutable con contratos y casos de fallo | **Introductoria, no cerrada** |
-| 23 | Pruebas, seguridad y rendimiento | Suite completa, métricas y plan de despliegue seguro | **Introductoria, no cerrada** |
-| 24 | Entrega final, criterios y defensa | Proyecto construido, rúbrica aplicada y demostración verificable | **Introductoria, no cerrada** |
+| 20 | Vectores, similitud coseno, recuperación y evaluación; reescrita | Añadir embeddings de modelo real e índice en motor, con tests | Desarrollo sustancial nuevo; integración pendiente |
+| 21 | RAG, GraphRAG, recuperación respaldada, abstención y pruebas negativas; reescrita | Integración con LLM, índice y evaluación de citas real | Desarrollo sustancial nuevo; integración pendiente |
+| 22 | HTTP, FastAPI, endpoint Python, JSON y tests de éxito/fallo; reescrita | App real con driver y secretos, integración con Neo4j y despliegue | Desarrollo sustancial nuevo; integración pendiente |
+| 23 | Pruebas unitarias, negativas, mocks, seguridad, latencia y planes; reescrita | Pruebas de integración reales, benchmark y despliegue seguro | Desarrollo sustancial nuevo; integración pendiente |
+| 24 | Proyecto final por fases, rúbrica y pruebas de autonomía; reescrita | Construir y ejecutar solución completa sobre segundo dataset, evaluación independiente | Rúbrica extensa; proyecto de integración pendiente |
 
 ## Especializaciones y materiales transversales
 
@@ -67,7 +67,7 @@
 2. **Código sin validación de motor:** muchas salidas están indicadas como esperadas, pero aún requieren integración real.
 3. **Cobertura de exámenes:** unos pocos cuestionarios no bastan para evaluar preparación oficial.
 4. **Laboratorio continuo insuficiente:** hace falta acumular entregables y evolucionar el mismo catálogo de forma verificable.
-5. **Avanzado esquemático:** todavía es necesario convertir 20–24 en clases completas con laboratorios, no aumentar la longitud artificialmente.
+5. **Integración avanzada pendiente:** las semanas 18–24 se han ampliado en esta revisión, pero todavía faltan implementaciones de integración real, modelos externos, evaluación independiente y despliegue seguro. La longitud añadida por sí sola no cierra esos temas.
 6. **Datos y textos contradictorios:** se corrigió la explicación inicial de semana 14 porque las dos fichas iniciales sí incluyen títulos; el error se introduce después para el test negativo.
 7. **Especializaciones no equivalen a certificación:** disponer de una guía de Protégé/GraphDB no valida competencia operativa.
 
@@ -76,7 +76,7 @@
 1. **Cerrar fundamentos 01–07:** probar y corregir código, ejercicios completos, práctica inédita y pruebas de integración en AuraDB.
 2. **Cerrar ontologías 11–14 y talleres:** proyectos de RDF desde CSV, SKOS, OWL con razonador y SHACL en GraphDB.
 3. **Cerrar ArcadeDB y arquitectura 08–10 / 15–17:** tests versionados y arquitectura híbrida reproducible.
-4. **Construir 20–24 desde cero:** búsqueda semántica, GraphRAG, aplicación, seguridad y defensa.
+4. **Completar la integración real de 18–24:** búsqueda semántica con modelos, GraphRAG con evaluación, API conectada, seguridad y defensa sobre código probado.
 5. **Evaluar alumnos:** comparar resultados antes y después, examinar autonomía sin ayudas, corregir contenidos donde fallen.
 
 ## Criterio final
