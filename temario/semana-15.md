@@ -79,7 +79,7 @@ Con los registros erróneos debe informar de:
 3. Título ausente en la fila 3.
 4. Año inválido en la fila 3.
 
-**No confundas seis incidencias con seis registros malos:** varias reglas pueden fallar en un mismo registro. Se informan incidencias, no necesariamente filas únicas.
+**No confundas cinco incidencias con cinco registros malos:** varias reglas pueden fallar en un mismo registro. Se informan incidencias, no necesariamente filas únicas.
 
 ## 5. Lleva la idea a Cypher
 
