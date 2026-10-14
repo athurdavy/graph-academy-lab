@@ -31,15 +31,15 @@
 | 06 | MERGE, UNWIND, LOAD CSV, integridad y referencias | Validar importación real en AuraDB, fallos de red y datos CSV inválidos | Desarrollo sustancial; integración pendiente |
 | 07 | Python Driver, parámetros, transacciones y arquitectura | Tests del driver simulado no sustituyen tests de integración y recuperación tras errores | Desarrollo sustancial; integración pendiente |
 | 08 | ArcadeDB, conceptos multimodelo y SQL inicial | Validar contra servidor ArcadeDB concreto y repetir sin duplicación | Desarrollo intermedio; integración pendiente |
-| 09 | HTTP, JSON, peticiones desde Python y consultas ArcadeDB | Completar suite de pruebas HTTP y respuestas inesperadas; verificar endpoints por versión | Intermedia; tests de integración pendientes |
-| 10 | Comparación de motores y criterios de benchmark | Ejecutar una comparación reproducible, con volumen y métricas reales | Parcial; metodología sin campaña de mediciones |
+| 09 | HTTP, JSON y cliente ArcadeDB inyectable; añadidas seis pruebas simuladas de errores | Verificar API y respuestas contra versión concreta del servidor | Desarrollo intermedio; integración pendiente |
+| 10 | Método de comparación, paridad de resultados y estadísticas con cinco pruebas unitarias | Ejecutar campaña de benchmark real con motores y red documentada | Desarrollo intermedio; mediciones reales pendientes |
 | 11 | Ontologías, RDF/RDFS, OWL, SKOS, SHACL, Python | Trabajo adicional de modelado autónomo y selección de vocabularios | Desarrollo sustancial; evaluación incompleta |
 | 12 | Vocabularios SKOS, SPARQL, filtros, caminos y RDFLib | Ampliar consultas avanzadas y validar resultados en GraphDB | Desarrollo sustancial; integración pendiente |
 | 13 | OWL, inferencias, mundo abierto, inversas y perfiles | Razonador real, inconsistencias y sesiones Protégé verificadas | Desarrollo sustancial; práctica con motor pendiente |
 | 14 | SHACL, shapes, validación positiva y negativa | Añadir informes detallados, reglas avanzadas y configuración GraphDB | Desarrollo sustancial; integración pendiente |
-| 15 | Calidad de datos, Cypher y RDF | Definir esquema de incidentes, reporte medible y aceptación de cambios | Intermedia; proyecto evaluado incompleto |
-| 16 | Identidad, procedencia y PROV-O | Modelar revisiones de afirmaciones, versionado de vocabularios y reconciliación | Intermedia; proyecto evaluado incompleto |
-| 17 | Arquitectura, repositorios, fuente de verdad, ORM/OGM | Construir API integrada, probar sincronización SQL/Neo4j y observabilidad | Intermedia; integración pendiente |
+| 15 | Calidad, auditor Python y seis pruebas de duplicados y datos inválidos; ampliada | Integración y gestión operativa de incidentes en Neo4j/RDF | Desarrollo sustancial nuevo; integración pendiente |
+| 16 | Procedencia, registros de revisión con cuatro pruebas y ejemplo PROV-O; ampliada | Persistencia real, integridad de auditoría y reconciliación | Desarrollo sustancial nuevo; integración pendiente |
+| 17 | Contratos Python, adaptadores, pruebas de memoria y consistencia híbrida; ampliada | API real integrada, sincronización SQL/Neo4j y observabilidad | Desarrollo sustancial nuevo; integración pendiente |
 | 18 | KG, afirmaciones con fuente, identidad y NetworkX; reescrita | Tests del laboratorio y reconciliación sobre registros nuevos | Desarrollo sustancial nuevo; integración pendiente |
 | 19 | NLP, NER, enlace de entidades, precisión y recall; reescrita | Ensayar modelos y datasets reales, anotar resultados y errores | Desarrollo sustancial nuevo; evaluación de modelo pendiente |
 | 20 | Vectores, similitud coseno, recuperación y evaluación; reescrita | Añadir embeddings de modelo real e índice en motor, con tests | Desarrollo sustancial nuevo; integración pendiente |
